@@ -3,7 +3,7 @@
 function(input,output, session){
 
 # Maps --------------------------------------------------------------------
-
+## Dataset selection ----
     domain <- reactive({
         if (input$domain == "cypal1718") {
             data <- cypal1718
@@ -50,7 +50,7 @@ function(input,output, session){
         }
         return(data)
     })
-    
+## Palette for map ----    
     palette <-  reactive({
         if (input$domain == "cypal1718") {
             pal <- ~col(cypal1718$`Less Active`)
@@ -97,7 +97,7 @@ function(input,output, session){
         }
         return(pal)
     })
-    
+## Colours for legend ----    
     colours <- reactive({
         if ((input$domain == "cypal1718")|(input$domain == "cypal1819")|(input$domain == "cypal1920")|(input$domain == "ncmprec")|
             (input$domain == "ncmp6")|(input$domain == "care")|
@@ -117,7 +117,7 @@ function(input,output, session){
         }
         return(col)
     })
-    
+## Legend labels ----    
     labels <- reactive({
         if ((input$domain == "cypal1718")|(input$domain == "cypal1819")|input$domain == "cypal1920") {
             lab <- c("25-30%", "30-35%", "35-40%", "40-45%", "45-50%", "50-55%")
@@ -147,7 +147,7 @@ function(input,output, session){
         }
         return(lab)
     })
-    
+## Title for legend ----    
     title <-  reactive({
         if (input$domain == "cypal1718") {
             t <-  "Less Active (2017-18)"
@@ -194,7 +194,7 @@ function(input,output, session){
         }
         return(t)
     })
-    
+## Source ----    
     source <-  reactive({
         if (input$domain == "cypal1819") {
             con <- "Source: Sport England Active Lives Children and Young People Survey, 2018/19"
@@ -223,7 +223,7 @@ function(input,output, session){
         }
         return(con)
     })
-    
+## Reactive filtering ----    
     observe({
         updateSelectInput(session, "answer",
                           choices = unique(schoolsdb[input$question]))
@@ -238,7 +238,7 @@ function(input,output, session){
     })
     
 
- ##Map Generation   
+## Map Generation ----   
     
     output$map <- renderLeaflet({
         shiny::validate(need(nrow(domain()) != 0, message = FALSE))
@@ -412,8 +412,7 @@ function(input,output, session){
 
 # Graphs ------------------------------------------------------------------
 
-    
-    
+## Dataset ----    
     topic <- reactive({
         if (input$topic == "ncmprec_time") {
             data <- NCMPRec_time
@@ -436,7 +435,7 @@ function(input,output, session){
         }
         return(data)
     })
-    
+## Graph Title ----    
     graphTitle <- reactive({
         if (input$topic == "ncmprec_time") {
             t <- "Proportion of Children Classified as Overweight in Reception"
@@ -459,7 +458,7 @@ function(input,output, session){
         }
         return(t)
     })
-    
+## Source ----    
     source <-  reactive({
         if (input$topic == "al_time") {
             s <- "Source: Sport England Active Lives Survey"
@@ -475,11 +474,11 @@ function(input,output, session){
         }
         return(s)
     })
-    
+## Area selection ----    
     area <- reactive({
         topic() %>% filter(AreaName %in% input$area)
     })
-    
+## Y axis ----    
     ylab <- reactive({
         if ((input$topic == "cypal_time")|(input$topic == "al_time")|(input$topic == "ncmprec_time")|
             (input$topic == "ncmp6_time")|(input$topic == "readiness_time")|(input$topic == "readiness_fsm_time")|
@@ -490,7 +489,7 @@ function(input,output, session){
         }
         return(y)
     })
-    
+## Graph plotting ----    
     output$chart <- renderPlot({
         if (input$area %in% "England") {
             line_size <- 2
@@ -501,13 +500,14 @@ function(input,output, session){
         ggplot(area(), aes(x=Timeperiod, y=Value, group = AreaName)) +
             geom_line(aes(color = AreaName), size = line_size) +
             geom_point(aes(color = AreaName)) +
-            labs(x = "Time", y = "Percent", col="Area") +
+            labs(x = "Time", y = "Rate (%)", col="Area") +
             ggtitle(graphTitle()) +
             theme_GMM() +
-            scale_colour_branded()
+            scale_colour_manual(values = GMM_cols %>% unname)
 
     })
-    
+## Text to sit under graph ----
+### Earliest release ----
     early <- reactive({
         if (input$topic == "ncmprec_time") {
             min <- NCMPRec_time %>% filter(Timeperiod == "2006/07")
@@ -530,7 +530,7 @@ function(input,output, session){
         }
         return(min)
     })
-    
+### Latest release ----    
     latest <- reactive({
         if (input$topic == "ncmprec_time") {
             max <- NCMPRec_time %>% filter(Timeperiod == "2018/19")
@@ -553,7 +553,7 @@ function(input,output, session){
         }
         return(max)
     })
-    
+### Graph title ----    
     graph_title <- reactive({
         if (input$topic == "ncmprec_time") {
             t <- "prevalence of obesity in reception age children"
@@ -576,7 +576,7 @@ function(input,output, session){
         }
         return(t)
     })
-    
+### Reactive area and value ----    
     x <- reactive({
         early() %>% filter(AreaName %in% input$area) 
     })
@@ -589,7 +589,7 @@ function(input,output, session){
         y()$Value-x()$Value
     })
     
-    
+### Text ----    
     output$change <- renderText({
         paste("Since baseline the ", graph_title(), "in ", input$area, " has ", 
               (if ((y()$Value-x()$Value)>0){
@@ -599,7 +599,7 @@ function(input,output, session){
               }),
               " by ", format(round(abs(diff()), 2), nsmall = 2), "%." )
     })
-
+## Screenshot ----
     observeEvent(input$go, {
         screenshot(selector = "#chart", filename = "chart")
     })
