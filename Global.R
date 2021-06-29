@@ -315,49 +315,6 @@ gstheme <- create_theme(
 
 ## GMM Theme for graphs
 
-theme_GMM <- function(
-  base_size = 12,
-  base_colour = "#63666A"
-) {
-  ##Axis
-  theme(
-    legend.position = "none",
-    
-    axis.ticks = element_blank(),
-    axis.line = element_line(colour = base_colour),
-    axis.line.x = element_line(colour = x_col),
-    axis.line.y = element_line(colour = y_col),
-    
-    ##Text
-    text = element_text(
-      colour = base_colour, size = base_size,
-      hjust = 0.5, vjust = 0.5, angle = 0, lineheight = 0.8
-    ),
-    axis.text = element_text(colour = base_colour, size = base_size),
-    plot.title = element_text(face = "bold", 
-                              hjust = 0, colour = "black", vjust = 0),
-    
-    ## Axis title attributes. Adjustments of
-    
-    axis.title.y = element_text(hjust = 1, vjust = 1),
-    axis.title.x = element_text(hjust = 1, vjust = 0),
-    
-    ## Background attributes (currently all blank)
-    
-    panel.grid.major.y = element_line(color = "#a3a3a2"), 
-    panel.grid.major.x = element_blank(),
-    panel.grid.minor = element_blank(),   
-    axis.ticks = element_blank(),
-    panel.background = element_blank(),
-    panel.border = element_blank(),
-    
-    ## Strip attributes for facet grid and facet wrap
-    
-    strip.background =   element_blank(),
-    strip.text =         element_text(color = "black", face = "bold", size = base_size + 1),
-    strip.text.x =       element_text(),
-    strip.text.y =       element_text(angle = -90)
-  )}
 
 
 GMM_cols <- c(
