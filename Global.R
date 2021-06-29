@@ -29,7 +29,7 @@ lookupmsoa <- read_csv("https://opendata.arcgis.com/datasets/fe6c55f0924b4734adf
 
 # Datasets ----------------------------------------------------------------
 
-# IMD
+## IMD ----
 imd <- read.csv("data/imd.csv") %>% 
   mutate(decile = factor(decile, levels = c(1:10), ordered = TRUE))
 
@@ -63,7 +63,7 @@ imd19 <- imd %>%
 environ <- imd %>%
   filter(index_domain == "Living Environment")
 
-#Active Lives
+## Active Lives ----
 CYPAL <- read_excel("data/Active Lives Template v20.xlsx", 
                     sheet = "Full CYP Active Lives")
 
@@ -91,7 +91,8 @@ cypal1920 <- CYPAL %>%
 bins <- c(25, 30, 35, 40, 45, 50)
 col <- colorBin(c("#FFFFFF", "#FFBED2", "#F679A7", "#E5007E", "#BA1084", "#8C1D82"), domain = cypal1718$Active, bins = bins)
 
-#NCMP Reception: Prevalence of obesity (including severe obesity)
+## Obesity ----
+### NCMP Reception: Prevalence of obesity (including severe obesity) ----
 NCMPRec <- read.csv("data/NCMPRec.csv")
 NCMPRec <- left_join(lads, NCMPRec, by = c("lad17nm" = "AreaName"))
 
@@ -106,7 +107,7 @@ obesitybins <- c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50)
 obesitypal <- colorBin(c("#FFFFFF", "#FFD8E4", "#FEB0C9", "#F887AF", "#F05996",
                          "#E5007E", "#d40481", "#C30C83", "#B11384", "#9E1984", "#8C1D82"), domain = obesityRec$Value, bins = obesitybins)
 
-#NCMP Year 6: Prevalence of obesity (including severe obesity)
+### NCMP Year 6: Prevalence of obesity (including severe obesity) ----
 
 NCMP6 <- read.csv("data/NCMP6.csv")
 NCMP6 <- left_join(lads, NCMP6, by = c("lad17nm" = "AreaName"))
@@ -115,7 +116,8 @@ NCMP6 <- left_join(lads, NCMP6, by = c("lad17nm" = "AreaName"))
 obesity6 <- read.csv("data/obesity6.csv")
 obesity6 <- left_join(msoa, obesity6, by = c("MSOA11CD" = "AreaCode"))
 
-#School readiness: percentage of children achieving a good level of development at the end of Reception
+## School Readiness ----
+### School readiness: percentage of children achieving a good level of development at the end of Reception ----
 
 readiness <- read.csv("data/readiness.csv")
 readiness <- left_join(lads, readiness, by = c("lad17nm" = "AreaName"))
@@ -123,7 +125,7 @@ readiness <- left_join(lads, readiness, by = c("lad17nm" = "AreaName"))
 readiness_bins <- c(64, 66, 68, 70, 72, 74, 76)
 readiness_pal <- colorBin(c("#FFFFFF", "#FFBED2", "#F679A7", "#E5007E", "#C90983", "#AB1584", "#8C1D82"), domain = readiness, bins = readiness_bins)
 
-#School Readiness: percentage of children with free school meal status achieving a good level of development at the end of Reception
+### School Readiness: percentage of children with free school meal status achieving a good level of development at the end of Reception ----
 
 readiness_fsm <- read.csv("data/readinessFSM.csv")
 readiness_fsm <- left_join(lads, readiness_fsm, by = c("lad17nm" = "AreaName"))
@@ -132,7 +134,7 @@ readiness_fsm_bins <- c(44, 47, 50, 53, 56, 59, 62)
 readiness_fsm_pal <- colorBin(c("#FFFFFF", "#FFBED2", "#F679A7", "#E5007E", "#C90983", "#AB1584", "#8C1D82"), 
                               domain = readiness_fsm, bins = readiness_fsm_bins)
 
-#Children in care
+## Children in care ----
 
 care <- read.csv("data/care.csv")
 care <- left_join(lads, care,  by = c("lad17nm" = "AreaName"))
@@ -140,7 +142,7 @@ care <- left_join(lads, care,  by = c("lad17nm" = "AreaName"))
 care_bins <- c(40,60,80,100,120,140)
 care_pal <- colorBin(c("#FFFFFF", "#FFBED2", "#f679a7", "#E5007E", "#BA1084", "#8C1D82"), domain = care$Value, bins = care_bins)
 
-#16-17 year olds NEETs
+## 16-17 year olds NEETs ----
 
 neets <- read.csv("data/neets.csv")
 neets <- left_join(lads, neets,  by = c("lad17nm" = "AreaName"))
@@ -148,7 +150,7 @@ neets <- left_join(lads, neets,  by = c("lad17nm" = "AreaName"))
 neets_bins <- c(3,4,5,6,7,8,9)
 neets_pal <- colorBin(c("#FFFFFF", "#FFBED2", "#F679A7", "#E5007E", "#C90983", "#AB1584", "#8C1D82"), domain = neets$Value, bins = neets_bins)
 
-#Youth Homelessness
+## Youth Homelessness ----
 homeless <- read.csv("data/Youth Homelessness.csv")
 homeless <- left_join(lads, homeless, by = c("lad17nm" = "Area.Name"))
 
@@ -157,7 +159,7 @@ homeless_bins <- c(0.5, 1, 1.5 ,2, 2.5, 3, 3.5)
 homeless_pal <- colorBin(c("#FFFFFF", "#FFBED2", "#f679a7", "#E5007E", "#BA1084", "#8C1D82"),
                          domain = homeless$Rate.of.youth.homelessness..16.24.,
                          bins = homeless_bins)
-#Poverty
+## Poverty ----
 poverty <- read.csv("data/poverty.csv")
 poverty <- left_join(constituency, poverty, by = c("pcon17cd" = "Area.Code"))
 
@@ -168,11 +170,11 @@ poverty_pal <- colorBin(c("#FFFFFF", "#FFCEDD", "#FB9CBC", "#F2669C", "#E5007E",
                         domain = poverty$`Percentage.2018.19`,
                         bins = poverty_bins)
 
-#Crime
+## Crime ----
 
 ss19 <- read.csv("data/ss19.csv")
 
-#Greenspace
+## Greenspace ----
 
 privateGreenspace <- read.csv("data/Outdoor Private Space MSOA.csv")
 privateGreenspace <- left_join(msoa, privateGreenspace, by = c("MSOA11CD" = "MSOA.code"))
@@ -195,7 +197,7 @@ sat_clubs <- read.csv("data/sat_clubs.csv")
 
 # Graphs Data -------------------------------------------------------------
 
-#neets
+## NEETS ----
 neets_time <- fingertips_data(IndicatorID = 93203, AreaTypeID = 202) %>%
   select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, Timeperiod, Value, Sex) %>%
   filter(AreaName %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan")) %>%
@@ -207,7 +209,7 @@ neets_time_Eng <- fingertips_data(IndicatorID = 93203, AreaTypeID = 6) %>%
 
 neets_time <- bind_rows(neets_time, neets_time_Eng)
 
-#Obesity
+## Obesity ----
 NCMPRec_time <- fingertips_data(IndicatorID = 90319, AreaTypeID = 202) %>% 
   select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, Timeperiod, Value, Sex) %>%
   filter(AreaName %in% c("England", "Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan")) %>%
@@ -220,7 +222,7 @@ NCMP6_time <- fingertips_data(IndicatorID = 90323, AreaTypeID = 202) %>%
   filter(Sex == "Persons")
 
 
-#School Readiness
+## School Readiness ----
 
 readiness_time <- fingertips_data(IndicatorID = 90631, AreaTypeID = 202) %>%
   select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, Timeperiod, Value, Sex) %>%
@@ -244,7 +246,7 @@ readiness_fsm_time_Eng <- fingertips_data(IndicatorID = 90632, AreaTypeID = 6) %
 
 readiness_fsm_time <- bind_rows(readiness_fsm_time, readiness_fsm_time_Eng)
 
-#Care
+## Care ----
 
 care_time <- fingertips_data(IndicatorID = 90803, AreaTypeID = 202) %>%
   select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, Timeperiod, Value, Sex) %>%
@@ -256,7 +258,7 @@ care_time_Eng<- fingertips_data(IndicatorID = 90803, AreaTypeID = 6) %>%
 
 care_time <- bind_rows(care_time, care_time_Eng)
 
-#Povertyf
+## Poverty ----
 
 poverty_time <- read.csv("data/Poverty Time.csv")
 poverty_time <- rename(poverty_time, "Value"="Percentage")
@@ -265,7 +267,7 @@ poverty_time_Eng <- read.csv("data/Poverty_Eng.csv")
 
 poverty_time <- bind_rows(poverty_time, poverty_time_Eng)
 
-#Inactivity
+## Inactivity ----
 
 cypal_time <- read_excel("data/Active Lives Template v20.xlsx", 
                          sheet = "Full CYP Active Lives") %>%
@@ -293,6 +295,7 @@ schoolsdb <- schoolsdb[-c(1:2,4:9, 65:68)]
 
 # Other -------------------------------------------------------------------
 
+## GS Theme for Shiny  ----
 gstheme <- create_theme(
   adminlte_color(
     light_blue = "#FFFFFF"
@@ -309,6 +312,69 @@ gstheme <- create_theme(
     info_box_bg = "#D21C60"
   )
 )
+
+## GMM Theme for graphs
+
+theme_GMM <- function(
+  base_size = 12,
+  base_colour = "#63666A"
+) {
+  ##Axis
+  theme(
+    legend.position = "none",
+    
+    axis.ticks = element_blank(),
+    axis.line = element_line(colour = base_colour),
+    axis.line.x = element_line(colour = x_col),
+    axis.line.y = element_line(colour = y_col),
+    
+    ##Text
+    text = element_text(
+      colour = base_colour, size = base_size,
+      hjust = 0.5, vjust = 0.5, angle = 0, lineheight = 0.8
+    ),
+    axis.text = element_text(colour = base_colour, size = base_size),
+    plot.title = element_text(face = "bold", 
+                              hjust = 0, colour = "black", vjust = 0),
+    
+    ## Axis title attributes. Adjustments of
+    
+    axis.title.y = element_text(hjust = 1, vjust = 1),
+    axis.title.x = element_text(hjust = 1, vjust = 0),
+    
+    ## Background attributes (currently all blank)
+    
+    panel.grid.major.y = element_line(color = "#a3a3a2"), 
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),   
+    axis.ticks = element_blank(),
+    panel.background = element_blank(),
+    panel.border = element_blank(),
+    
+    ## Strip attributes for facet grid and facet wrap
+    
+    strip.background =   element_blank(),
+    strip.text =         element_text(color = "black", face = "bold", size = base_size + 1),
+    strip.text.x =       element_text(),
+    strip.text.y =       element_text(angle = -90)
+  )}
+
+
+GMM_cols <- c(
+  `blue` = "#009FE3",
+  `pink` = "#E5007E",
+  `orange` = "#F39200",
+  `green` = "#95C11F",
+  `purple` = "#8C1D82",
+  `pale purple` = "#8A5EA4",
+  `turquoise` = "#009E83",
+  `dark blue` = "#0069b4",
+  `yellow` = "#Fdc300",
+  `grey` = "#706f6f" 
+)
+
+
+## Populations ----
 u25 <- read.csv("data/u25.csv")
 u25 <- left_join(lads, u25, by = c("lad17nm" = "GEOGRAPHY_NAME"))
 
@@ -317,6 +383,8 @@ u16 <- left_join(lads, u16, by = c("lad17nm" = "GEOGRAPHY_NAME"))
 
 yp <- read.csv("data/yp.csv")
 yp <- left_join(lads, yp, by = c("lad17nm" = "GEOGRAPHY_NAME"))
+
+## Population Palette ----
 
 u16_bins <- c(18,19,20,21,22,23)
 u16_pal <- colorBin(c("#FFFFFF", "#EDA4BF", "#DB497F", "#BA1F67", "#8A2676", "#5B2D86"),
@@ -328,6 +396,7 @@ yp_pal<- colorBin(c("#FFFFFF", "#EDA4BF", "#DB497F", "#BA1F67", "#8A2676", "#5B2
 
 no_U25 <- sum(yp$OBS_VALUE)
 
+## Stats ----
 DM <- length(which(schoolsdb$`Is this School signed up to the Daily Mile?` == "Yes"))
 SGL2 <- length(which(schoolsdb$`Does this school get involved with the School Games at Level 2?` == "Yes"))
 schools <- length(unique(schoolsdb$URN.x))
@@ -339,7 +408,7 @@ no_U25 <- sum(no_U25$OBS_VALUE)
 no_U25 <- prettyNum(no_U25, big.mark = ",", scientific = FALSE)
 trusts <- length(unique(schoolsdb$`Which academy/trust are they part of`))
 
-#Colour Palettes
+## Colour Palettes ----
 col_6 <- c("#FFFFFF", "#FFBED2", "#f679a7", "#E5007E", "#BA1084", "#8C1D82")
 col_7 <- c("#FFFFFF", "#FFBED2", "#F679A7", "#E5007E", "#C90983", "#AB1584", "#8C1D82")
 col_9 <- c("#FFFFFF", "#FFCEDD", "#FB9CBC", "#F2669C", "#E5007E",
@@ -349,13 +418,14 @@ col_11 <- c("#FFFFFF", "#FFD8E4", "#FEB0C9", "#F887AF", "#F05996",
 col_10 <- c("#FFFFFF", "#FFD8E4", "#FEB0C9", "#F887AF", "#F05996",
             "#E5007E", "#D00682", "#BA1084", "#A31884", "#8C1D82")
 
+## Crime mutate ----
 ss192 <- ss19 %>%
   filter(!is.na(lng)) %>%
   filter (!is.na(lat))
 
 ss192 <- ss192 %>%
   mutate(longitude = as.numeric(longitude)) %>% mutate(latitude = as.numeric(latitude))
-
+## IMD mutate ----
 imd <- imd %>%
   mutate(year = as.numeric(year)) %>% filter(year == 2019)
 
