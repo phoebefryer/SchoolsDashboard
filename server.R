@@ -203,9 +203,9 @@ function(input,output, session){
         } else if (input$domain == "cypal1920") {
             con <- "Source: Sport England Active Lives Children and Young People Survey, 2019/20"
         } else if ((input$domain == "ncmprec")|(input$domain == "ncmp6")) {
-            con <- "Source: National Child Measurement Programme, 2018/19"
+            con <- "Source: National Child Measurement Programme, 2019/20"
         } else if ((input$domain == "ncmprecMSOA")|(input$domain == "ncmp6MSOA")) {
-            con <- "Source: National Child Measurement Programme, 2016/16-2017/18"
+            con <- "Source: National Child Measurement Programme, 2017/18 - 2019/20"
         } else if ((input$domain == "readiness")|(input$domain == "readiness_fsm")|
                    (input$domain == "neet")) {
             con <- "Source: Department for Education, 2018/19"
@@ -533,9 +533,9 @@ function(input,output, session){
 ### Latest release ----    
     latest <- reactive({
         if (input$topic == "ncmprec_time") {
-            max <- NCMPRec_time %>% filter(Timeperiod == "2018/19")
+            max <- NCMPRec_time %>% filter(Timeperiod == "2019/20")
         } else if (input$topic == "ncmp6_time") {
-            max <- NCMP6_time %>% filter(Timeperiod == "2018/19")
+            max <- NCMP6_time %>% filter(Timeperiod == "2019/20")
         } else if (input$topic == "readiness_time") {
             max <- readiness_time %>% filter(Timeperiod == "2018/19")
         } else if (input$topic == "readiness_fsm_time") {

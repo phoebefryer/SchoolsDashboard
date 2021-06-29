@@ -55,7 +55,7 @@ constituency <- constituency %>%
 constituency %>% st_write("data/GM_Constituency.geojson")
 # Datasets ----------------------------------------------------------------
 
-#IMD
+## IMD ----
 imd <- read.csv("data/imd.csv") %>% 
   mutate(decile = factor(decile, levels = c(1:10), ordered = TRUE))
 
@@ -89,7 +89,7 @@ imd19 <- imd %>%
 environ <- imd %>%
   filter(index_domain == "Living Environment")
 
-#Active Lives
+## Active Lives ----
 CYPAL <- read_excel("data/Active Lives Template v20.xlsx", 
                     sheet = "Full CYP Active Lives")
 
@@ -117,11 +117,12 @@ cypal1920 <- CYPAL %>%
 bins <- c(25, 30, 35, 40, 45, 50)
 col <- colorBin(c("#FFFFFF", "#EDA4BF", "#DB497F", "#BA1F67", "#8A2676", "#5B2D86"), domain = cypal1718$Active, bins = bins)
 
-#NCMP Reception: Prevalence of obesity (including severe obesity)
-NCMPRec <- fingertips_data(IndicatorID = 90319, AreaTypeID = 101) %>% 
+## Obesity ----
+#### NCMP Reception: Prevalence of obesity (including severe obesity) ----
+NCMPRec <- fingertips_data(IndicatorID = 90319, AreaTypeID = 102) %>% 
   select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, Timeperiod, Value) %>%
   filter(AreaName %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan"))%>%
-  filter(Timeperiod =="2018/19")
+  filter(Timeperiod =="2019/20")
 
 NCMPRec %>% write_csv("data/NCMPRec.csv")
 
@@ -133,7 +134,7 @@ ncmppal <- colorBin(c("#FFFFFF", "#EDA4BF", "#DB497F", "#BA1F67", "#8A2676", "#5
 obesityRec <- fingertips_data(IndicatorID = 93106, AreaTypeID = 3) %>%
   filter(AreaType == "MSOA") %>%
   filter(ParentName %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan")) %>%
-  filter(Timeperiod == "2016/17 - 18/19")
+  filter(Timeperiod == "2017/18 - 19/20")
 
 obesityRec %>% write_csv("data/obesityRec.csv")
 
@@ -143,12 +144,12 @@ obesitybins <- c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50)
 obesitypal <- colorBin(c("#FFFFFF", "#F6D1DF", "#EDA4BF", "#E4769F", "#DB497F",
                          "#D21C60", "#BA1F67", "#A2226F", "#8A2676", "#72297E", "#5B2D86"), domain = obesityRec$Value, bins = obesitybins)
 
-#NCMP Year 6: Prevalence of obesity (including severe obesity)
+### NCMP Year 6: Prevalence of obesity (including severe obesity) ----
 
 NCMP6 <- fingertips_data(IndicatorID = 90323, AreaTypeID = 101) %>% 
   select(IndicatorID, IndicatorName, AreaCode, AreaName, AreaType, Timeperiod, Value) %>%
   filter(AreaName %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan"))%>%
-  filter(Timeperiod =="2018/19")
+  filter(Timeperiod =="2019/20")
 
 NCMP6 %>% write_csv("data/NCMP6.csv")
 
@@ -157,13 +158,14 @@ NCMP6 <- left_join(lads, NCMP6, by = c("lad17nm" = "AreaName"))
 obesity6 <- fingertips_data(IndicatorID = 93108, AreaTypeID = 3) %>%
   filter(AreaType == "MSOA") %>%
   filter(ParentName %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan")) %>%
-  filter(Timeperiod == "2016/17 - 18/19")
+  filter(Timeperiod == "2017/18 - 19/20")
 
 obesity6%>% write_csv("data/obesity6.csv")
 
 obesity6 <- left_join(msoa, obesity6, by = c("MSOA11CD" = "AreaCode"))
 
-#School readiness: percentage of children achieving a good level of development at the end of Reception
+## School readiness ----
+### School readiness: percentage of children achieving a good level of development at the end of Reception ----
 
 readiness <- fingertips_data(IndicatorID = 90631, AreaTypeID = 202) %>%
   filter(AreaName %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan")) %>%
@@ -177,7 +179,7 @@ readiness <- left_join(lads, readiness, by = c("lad17nm" = "AreaName"))
 readiness_bins <- c(64, 66, 68, 70, 72, 74, 76)
 readiness_pal <- colorBin(c("#FFFFFF", "#F0B3CA", "#E16795", "#D21C60", "#AA216C", "#822779", "#5B2D86"), domain = readiness_fsm, bins = readiness_bins)
 
-#School Readiness: percentage of children with free school meal status achieving a good level of development at the end of Reception
+### School Readiness: percentage of children with free school meal status achieving a good level of development at the end of Reception ----
 
 readiness_fsm <- fingertips_data(IndicatorID = 90632, AreaTypeID = 202) %>%
   filter(AreaName %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan")) %>%
@@ -192,7 +194,7 @@ readiness_fsm_bins <- c(44,47,50,53,56,59,62)
 readiness_fsm_pal <- colorBin(c("#FFFFFF", "#F0B3CA", "#E16795", "#D21C60", "#AA216C", "#822779", "#5B2D86"), 
                               domain = readiness_fsm, bins = readiness_fsm_bins)
 
-#Children in care
+## Children in care ----
 
 care <- fingertips_data(IndicatorID = 90803, AreaTypeID = 202) %>%
   filter(AreaName %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan")) %>%
@@ -205,7 +207,7 @@ care <- left_join(lads, care,  by = c("lad17nm" = "AreaName"))
 care_bins <- c(40,60,80,100,120,140)
 care_pal <- colorBin(c("#FFFFFF", "#EDA4BF", "#DB497F", "#BA1F67", "#8A2676", "#5B2D86"), domain = care$Value, bins = care_bins)
 
-#16-17 year olds NEETs
+## 16-17 year olds NEETs ----
 
 neets <- fingertips_data(IndicatorID = 93203, AreaTypeID = 202) %>%
   filter(AreaName %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan")) %>%
@@ -219,7 +221,7 @@ neets <- left_join(lads, neets,  by = c("lad17nm" = "AreaName"))
 neets_bins <- c(3,4,5,6,7,8,9)
 neets_pal <- colorBin(c("#FFFFFF", "#F0B3CA", "#E16795", "#D21C60", "#AA216C", "#822779", "#5B2D86"), domain = neets$Value, bins = neets_bins)
 
-#Youth Homelessness
+## Youth Homelessness ----
 homeless <- read.csv("data/Youth Homelessness.csv")
 homeless <- left_join(lads, homeless, by = c("lad17nm" = "Area.Name"))
 
@@ -229,7 +231,7 @@ homeless_pal <- colorBin(c("#FFFFFF", "#EDA4BF", "#DB497F", "#BA1F67", "#8A2676"
                          domain = homeless$`Rate of youth homelessness (16-24)`,
                          bins = homeless_bins)
 
-#Childhood Poverty
+## Childhood Poverty ----
 
 poverty <- read.csv("data/poverty.csv")
 poverty <- left_join(constituency, poverty, by = c("pcon17cd" = "Area Code"))
@@ -247,7 +249,7 @@ poverty_pal <- colorBin(c("#FFFFFF", "#F3C6D7", "#E88DAF", "#DD5487", "#D21C60",
                         domain = poverty$`Percentage 2018/19`,
                         bins = poverty_bins)
 
-#Crime
+## Crime ----
 
 ss_0619 <- ukc_stop_search_force(force = "greater-manchester",
                                  date = "2019-06") %>%
@@ -282,7 +284,7 @@ ss_0119 <- ukc_stop_search_force(force = "greater-manchester",
 rbind(ss_0119, ss_0219, ss_0319, ss_0419, ss_0519, ss_0619) %>%
   write_csv("data/ss19.csv")
 
-#Greenspace
+## Greenspace ----
 
 privateGreenspace <- read.csv("data/Outdoor Private Space MSOA.csv")
 
@@ -307,7 +309,7 @@ publicGreenspace_pal <- colorBin(c("#FFFFFF", "#F0B3CA", "#E16795", "#D21C60", "
 sat_clubs <- read.csv("data/sat_clubs.csv")
 
 
-#Schools Database
+## Schools Database ----
 
 postcodes <- read.csv("data/ukpostcodes.csv")
 db <- read_csv("data/SchoolsDb150121.csv")
@@ -664,3 +666,223 @@ theme_GMM <- function() {
   )
 }
 
+
+library(devtools)
+
+GSColours <- c(
+  `purple` = "#5B2D86",
+  `pink` = "#D21C60",
+  `pale purple` = "#8A6EAD",
+  `pale pink` = "#D7697A",
+  `blue` = "#5197D1",
+  `yellow` = "#FCCA58",
+  `grey` = "#3C3C3B",
+  `white` = "#FFFFFF"
+)
+
+GSCols <- function(...) {
+  cols <- c(...)
+  
+  if (is.null(cols))
+    return (GSColours)
+  
+  GSColours[cols]
+}
+
+
+GSPalette <- list(
+  `primary` = GSCols("purple", "pink"),
+  `secondary` = GSCols("pale purple", "pale pink"),
+  `gradient` = GSCols("white" , "pink", "purple"),
+  `mixed` = GSCols("purple", "pink", "pale purple", "pale pink", "blue", "yellow", "grey")
+)
+
+GSPal <- function(palette = "primary", reverse = FALSE, ...) {
+  pal <- GSPalette[[palette]]
+  
+  if (reverse) pal <- rev(pal)
+  
+  colorRampPalette(pal, ...)
+}
+
+scaleColGS <- function(palette = "primary", discrete = TRUE, reverse = FALSE, ...) {
+  pal <- GSPal(palette = palette, reverse = reverse)
+  
+  if (discrete) {
+    discrete_scale("colour", paste0("GS", palette), palette = pal, ...)
+  } else {
+    scale_color_gradientn(colours = pal(256), ...)
+  }
+}
+
+scaleFillGS <- function(palette = "gradient", discrete = TRUE, reverse = FALSE, ...) {
+  pal <- GSPal(palette = palette, reverse = reverse)
+  
+  if (discrete) {
+    discrete_scale("fill", paste0("GS", palette), palette = pal, ...)
+  } else {
+    scale_fill_gradientn(colours = pal(256), ...)
+  }
+}
+
+
+
+theme_GS <- function() {
+  
+  font <- "PT Sans"
+  fontColour <- "#3c3c3b"
+  
+  theme(
+    #grid elements
+    panel.grid.major.y = element_line(color = "#a3a3a2"), 
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),   
+    axis.ticks = element_blank(),
+    panel.background = element_blank(),
+    panel.border = element_blank(),
+    
+    #key text
+    plot.title = element_text(
+      family = font,
+      colour = "#5B2D86",
+      size = 16,
+      face = 'bold',          
+      hjust = 0,              
+      vjust = 2),         
+    
+    plot.subtitle = element_text(         
+      family = font,
+      colour = fontColour,
+      size = 14),               
+    
+    plot.caption = element_text(          
+      family = font,  
+      colour = fontColour,
+      size = 12,                 
+      hjust = 0),               
+    
+    #general text
+    axis.title = element_text(             
+      family = font,    
+      colour = fontColour,
+      size = 12),             
+    
+    axis.text = element_text(            
+      family = font, 
+      colour = fontColour,
+      size = 12),              
+    
+    axis.text.x = element_text(          
+      margin=margin(5, b = 10)),
+    
+    #legend
+    legend.position = "bottom",
+    legend.text.align = 0,
+    legend.background = element_blank(),
+    legend.title = element_blank(),
+    legend.key = element_blank(),
+    legend.text = element_text(family = font,
+                               size = 12,
+                               color  = fontColour)
+  )
+}
+
+themeGMM <- function(
+  base_size = 12,
+  base_colour = "#63666A"
+)
+  ##Axis
+  x_col = "white"
+y_col = "white"
+
+theme(
+  legend.position = "none",
+  
+  axis.ticks = element_blank(),
+  axis.line = element_line(colour = base_colour),
+  axis.line.x = element_line(colour = x_col),
+  axis.line.y = element_line(colour = y_col),
+  
+  ##Text
+  text = element_text(
+    colour = base_colour, size = base_size,
+    hjust = 0.5, vjust = 0.5, angle = 0, lineheight = 0.8
+  ),
+  axis.text = element_text(colour = base_colour, size = base_size),
+  plot.title = element_text(face = "bold", 
+                            hjust = 1, colour = "black", vjust = -2.5),
+  
+  ## Axis title attributes. Adjustments of
+  
+  axis.title.y = element_text(hjust = 1, vjust = 1),
+  axis.title.x = element_text(hjust = 1, vjust = 0),
+  
+  ## Background attributes (currently all blank)
+  
+  panel.background = element_blank(),
+  panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(),
+  
+  ## Strip attributes for facet grid and facet wrap
+  
+  strip.background =   element_blank(),
+  strip.text =         element_text(color = "black", face = "bold", size = base_size + 1),
+  strip.text.x =       element_text(),
+  strip.text.y =       element_text(angle = -90)
+)
+
+GMM_cols <- c(
+  `pink` = "#E5007E",
+  `blue` = "#009CDD",
+  `green` = "#84BD00",
+  `orange` = "#ED8B00",
+  `purple` = "#5B2D86",
+  `yellow` = "#FCCA58",
+  `turquoise` = "#009E83",
+  `pale purple` = "#8A6EAD",
+  `pale pink` = "#D7697A",
+  `red` = "#e30333",
+  `pale blue` = "#99d6f0",
+  `pale orange` = "#f7c799" 
+)
+
+scale_GMM <- function(type = "fill", ...) {
+  
+  type = match.arg(type, c("colour", "fill"))
+  
+  cols <- unname(GMM_cols)
+  
+  if (type == "fill") {
+    s <- scale_fill_manual(values = cols)
+  } else if (type == "colour") {
+    s <- scale_colour_manual(values = cols)
+  }
+  
+  return(s)
+  
+}
+
+check_pal <- function(
+  x = GMM_cols
+) {
+  
+  if (is.numeric(x)) {
+    
+    if (length(x) > 1) {
+      
+      x <- GMM_cols[x]
+      
+    } else
+      x <- GMM_cols[1:x]
+  }
+  
+  graphics::pie(
+    rep(1, length(x)),
+    col = x,
+    labels = names(x))
+  
+}
+
+check_pal(5)
+
+shinyloadtest::record_session("http://127.0.0.1:3064")
