@@ -29,7 +29,7 @@ lookupmsoa <- read_csv("https://opendata.arcgis.com/datasets/fe6c55f0924b4734adf
 
 # Datasets ----------------------------------------------------------------
 
-#IMD
+# IMD
 imd <- read.csv("data/imd.csv") %>% 
   mutate(decile = factor(decile, levels = c(1:10), ordered = TRUE))
 
