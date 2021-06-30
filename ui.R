@@ -1,3 +1,12 @@
+library(classInt); library(viridis);library(leaflet); library (dplyr); library(tidyverse) ; library(sf) ; 
+library(shiny); library(htmlwidgets); library(readxl); library(fingertipsR); library(leaflet.extras); library(httr);
+library(jsonlite); library(rjson); library(rgdal);library(geojsonio); library(mapview); library(leafem); library(ukpolice);
+library(nomisr); library(shinydashboard);library(shinyWidgets);library(tidyverse);library(sf);library(ggiraph);
+library(scales); library(htmltools);library(htmlwidgets);library(nomisr);library(readxl);
+library(mapview);library(fresh); library(leaflet.extras); library(rsconnect); library(shinyscreenshot);
+library(dashboardthemes); 
+
+
 dashboardPage(
     dashboardHeader(title = "Schools Database",
                     tags$li(a(href = 'https://www.greatersport.co.uk/',
@@ -94,16 +103,16 @@ dashboardPage(
                 fluidRow(
                     width = '100%',
                     shinycssloaders::withSpinner(
-                    leafletOutput("map", width = "99%"), type = 4, color = "#E5007E"), 
+                    leafletOutput("map", width = "99%"), type = 4, color = "#E6007E"), 
                     
                     tags$head(
-                        tags$style(HTML('#go{background-color:#E5007E}'))
+                        tags$style(HTML('#go{background-color:#E6007E}'))
                     ),
                     actionButton("go", "Download screenshot of the map", icon("download")),
 
                     fluidRow(
                         tags$h1("I Greater Manchester Overview"),
-                        tags$style(".small-box.bg-purple { background-color: #E5007E !important; color: #FFFFFF !important; }"),
+                        tags$style(".small-box.bg-purple { background-color: #E6007E !important; color: #FFFFFF !important; }"),
                         tags$style(".small-box.bg-fuchsia { background-color: #009fe3 !important; color: #FFFFFF !important; }"),
                         tags$style(".fa-graduation-cap { color: #FF56B3}"),
                         tags$style(".fa-award {color: #FF56B3}"),
@@ -144,7 +153,7 @@ dashboardPage(
                     plotOutput("chart"),
                 ),
                 tags$head(
-                    tags$style(HTML('#run{background-color:#E5007E}'))
+                    tags$style(HTML('#run{background-color:#E6007E}'))
                 ),
                 actionButton("run", "Download screenshot of the graph", icon("download")),
                 

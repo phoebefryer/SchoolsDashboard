@@ -313,9 +313,7 @@ gstheme <- create_theme(
   )
 )
 
-## GMM Theme for graphs
-
-
+## GMM Theme for graphs ----
 
 GMM_cols <- c(
   `blue` = "#009FE3",
@@ -327,7 +325,9 @@ GMM_cols <- c(
   `turquoise` = "#009E83",
   `dark blue` = "#0069b4",
   `yellow` = "#Fdc300",
-  `grey` = "#706f6f" 
+  `grey` = "#706f6f",
+  `blue` = "#5197D1",
+  `black` = "#000000"
 )
 
 
@@ -387,7 +387,5 @@ imd <- imd %>%
   mutate(year = as.numeric(year)) %>% filter(year == 2019)
 
 imd_pal <- colorBin(col_10 , domain = imd$decile, bins =10)
-
-
 
 
