@@ -206,13 +206,14 @@ function(input,output, session){
             con <- "Source: National Child Measurement Programme, 2019/20"
         } else if ((input$domain == "ncmprecMSOA")|(input$domain == "ncmp6MSOA")) {
             con <- "Source: National Child Measurement Programme, 2017/18 - 2019/20"
-        } else if ((input$domain == "readiness")|(input$domain == "readiness_fsm")|
-                   (input$domain == "neet")) {
+        } else if ((input$domain == "readiness")|(input$domain == "readiness_fsm")) {
             con <- "Source: Department for Education, 2018/19"
+        } else if ((input$domain == "neet")) {
+            con <- "Source: Department for Education, 2019"
         }else if (input$domain == "care") {
             con <- "Source: Department for Education, 2020"
         } else if (input$domain == "homeless") {
-            con <- "Source: CentrePoint, 2018/19" 
+            con <- "Source: CentrePoint, 2019/20" 
         } else if ((input$domain == "housing")|(input$domain == "crime")|(input$domain == "education")|
                    (input$domain == "employment")|(input$domain == "idaci")|(input$domain == "imd")) {
             con <- "Source: English Indices of Deprivation 2019"
@@ -541,7 +542,7 @@ function(input,output, session){
         } else if (input$topic == "readiness_fsm_time") {
             max <- readiness_fsm_time %>% filter(Timeperiod == "2018/19")
         } else if (input$topic == "neet_time") {
-            max <- neets_time %>% filter(Timeperiod == "2018")
+            max <- neets_time %>% filter(Timeperiod == "2019")
         } else if (input$topic == "cypal_time") {
             max <- cypal_time %>% filter(Timeperiod == "2019-20")
         } else if (input$topic == "al_time") {

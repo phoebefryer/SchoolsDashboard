@@ -338,8 +338,8 @@ GMMTheme <- shinyDashboardThemeDIY(
   ,logoBackColor = "#FFFFFF"
   
   ,headerButtonBackColor = "#FFFFFF"
-  ,headerButtonIconColor = "#e5007e"
-  ,headerButtonBackColorHover = "#e5007e"
+  ,headerButtonIconColor = "#e6007e"
+  ,headerButtonBackColorHover = "#e6007e"
   ,headerButtonIconColorHover = "#FFFFFF"
   
   ,headerBackColor = "#FFFFFF"
@@ -369,19 +369,19 @@ GMMTheme <- shinyDashboardThemeDIY(
   ,sidebarTabBorderColor = "none"
   ,sidebarTabBorderWidth = "0"
   
-  ,sidebarTabBackColorSelected = "#e5007e"
+  ,sidebarTabBackColorSelected = "#e6007e"
   ,sidebarTabTextColorSelected = "#FFFFFF"
   ,sidebarTabRadiusSelected = "0px"
   
-  ,sidebarTabBackColorHover = "#e5007e"
+  ,sidebarTabBackColorHover = "#e6007e"
   ,sidebarTabTextColorHover = "#FFFFFF"
   ,sidebarTabBorderStyleHover = "none solid none none"
-  ,sidebarTabBorderColorHover = "#e5007e"
+  ,sidebarTabBorderColorHover = "#e6007e"
   ,sidebarTabBorderWidthHover = "4"
   ,sidebarTabRadiusHover = "0px"
   
   ### boxes
-  ,boxBackColor = "#E5007E"
+  ,boxBackColor = "#e6007e"
   ,boxBorderRadius = "5"
   ,boxShadowSize = "none"
   ,boxShadowColor = ""
@@ -402,12 +402,12 @@ GMMTheme <- shinyDashboardThemeDIY(
   ,tabBoxBorderRadius = "5"
   
   ### inputs
-  ,buttonBackColor = "#e5007e"
+  ,buttonBackColor = "#e6007e"
   ,buttonTextColor = "#FFFFFF"
-  ,buttonBorderColor = "##e5007e"
+  ,buttonBorderColor = "##e6007e"
   ,buttonBorderRadius = "5"
   
-  ,buttonBackColorHover = "#e5007e"
+  ,buttonBackColorHover = "#e6007e"
   ,buttonTextColorHover = "#FFFFFF"
   ,buttonBorderColorHover = "#BEBEBE"
   
