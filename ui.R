@@ -8,10 +8,11 @@ library(dashboardthemes);
 
 
 dashboardPage(
-    dashboardHeader(title = "Schools Database",
+    dashboardHeader(title = span("Schools Dashboard", style = "color:#E6007E"),
                     tags$li(a(href = 'https://www.greatersport.co.uk/',
                               img(src = 'https://www.greatersport.co.uk/media/2587/gmm_logo_rgb.png',
-                                  title = "GreaterSport", height = "30px"),
+                                  title = "GreaterSport", 
+                                  height = "30px"),
                               style = "padding-top:10px; padding-bottom:10px;"),
                             class = "dropdown")
     ),
@@ -104,7 +105,7 @@ dashboardPage(
                     width = '100%',
                     shinycssloaders::withSpinner(
                     leafletOutput("map", width = "99%"), type = 4, color = "#E6007E"), 
-                    
+
                     tags$head(
                         tags$style(HTML('#go{background-color:#E6007E}'))
                     ),
