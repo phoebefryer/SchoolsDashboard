@@ -195,7 +195,7 @@ function(input,output, session){
         return(t)
     })
 ## Source ----    
-    source <-  reactive({
+    sourcetext <-  reactive({
         if (input$domain == "cypal1819") {
             con <- "Source: Sport England Active Lives Children and Young People Survey, 2018/19"
         } else if (input$domain == "cypal1718") {
@@ -334,7 +334,7 @@ function(input,output, session){
                 labels = labels()
             ) %>%
             addControl(
-                tags$em(source()), position = "bottomleft"
+                sourcetext(), position = "bottomleft"
             ) %>%
             
             onRender(
