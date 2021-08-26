@@ -227,11 +227,17 @@ function(input,output, session){
 ## Reactive filtering ----    
     observe({
         updateSelectInput(session, "answer",
-                          choices = unique(schoolsdb[input$question]))
+                          choices = 
+                              if (input$question == 'Is this school involved in any other projects?') {
+                                  unique(scan(text=schoolsdb$`Is this school involved in any other projects?`, what='', sep='|'))
+                              }
+                              else {unique(schoolsdbFiltered[input$question])}
+                          )
+                              
     })
     
     df <- reactive({
-        df = schoolsdb[schoolsdb[[input$question]] %in% input$answer,]
+        df = schoolsdb[schoolsdbFiltered[[input$question]] %in% input$answer,]
     })
     
     df2 <- reactive({
@@ -460,7 +466,7 @@ function(input,output, session){
         return(t)
     })
 ## Source ----    
-    source <-  reactive({
+    sourceGraph <-  reactive({
         if (input$topic == "al_time") {
             s <- "Source: Sport England Active Lives Survey"
         } else if (input$topic == "cypal_time") {
@@ -501,7 +507,8 @@ function(input,output, session){
         ggplot(area(), aes(x=Timeperiod, y=Value, group = AreaName)) +
             geom_line(aes(color = AreaName), size = line_size) +
             geom_point(aes(color = AreaName)) +
-            labs(x = "Time", y = "Rate (%)", col="Area") +
+            labs(x = "Time", y = "Rate (%)", 
+                 col="Area", caption = sourceGraph()) +
             ggtitle(graphTitle()) +
             theme_GMM() +
             scale_colour_manual(values = GMM_cols %>% unname)

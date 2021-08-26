@@ -212,7 +212,7 @@ care_pal <- colorBin(c("#FFFFFF", "#EDA4BF", "#DB497F", "#BA1F67", "#8A2676", "#
 neets <- fingertips_data(IndicatorID = 93203, AreaTypeID = 202) %>%
   filter(AreaName %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan")) %>%
   filter(Sex == "Persons") %>%
-  filter(Timeperiod == "2018")
+  filter(Timeperiod == "2019")
 
 neets %>% write_csv("data/neets.csv")
 
@@ -318,6 +318,9 @@ schoolslatlong <- left_join(schools, postcodes, by = c("Postcode" ="postcode"))
 schoolsdb <- left_join(db, schoolslatlong, by = c("EntityID" = "GroupID"))
 schoolsdb <- schoolsdb[-c(1:2,4:9, 65:68)]
 
+schoolsdbFiltered <- schoolsdb[c(4:6,11,14,15,17,19,21,22,24,38,40,44,49,50,51,53)]
+
+print(names(schoolsdbFiltered))
 
 # Theme -------------------------------------------------------------------
 
@@ -634,7 +637,7 @@ theme_GMM <- function() {
     plot.caption = element_text(          
       family = font,  
       colour = fontColour,
-      size = 12,                 
+      size = 14,                 
       hjust = 0),               
     
     #general text
@@ -646,7 +649,7 @@ theme_GMM <- function() {
     axis.text = element_text(            
       family = font, 
       colour = fontColour,
-      size = 12),              
+      size = 14),              
     
     axis.text.x = element_text(          
       margin=margin(5, b = 10)),
@@ -658,7 +661,7 @@ theme_GMM <- function() {
     legend.title = element_blank(),
     legend.key = element_blank(),
     legend.text = element_text(family = font,
-                               size = 10,
+                               size = 14,
                                color  = fontColour),
     
     #general
@@ -885,4 +888,6 @@ check_pal <- function(
 
 check_pal(5)
 
-shinyloadtest::record_session("http://127.0.0.1:3064")
+
+
+

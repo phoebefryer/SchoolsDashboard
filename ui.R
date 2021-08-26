@@ -22,7 +22,7 @@ dashboardPage(
                     menuItem("Mapping", tabName = "mapping", icon = icon("globe")),
                     conditionalPanel(
                         'input.sidebarid == "mapping"',
-                        selectInput("domain", "Background Data", list(
+                        selectInput("domain", "Dataset", list(
                             "Physical Activity" = c("Less Active (2017-18)" = "cypal1718",
                                                     "Less Active (2018-19)" = "cypal1819",
                                                     "Less Active (2019-20)" = "cypal1920"),
@@ -44,21 +44,24 @@ dashboardPage(
                                         "Childhood Poverty (After Housing Costs)" = "poverty",
                                         "Access to Private Greenspace" = "pvtGreenspace",
                                         "Access to Public Greenspace" = "pubGreenspace")
-                        )
+                        ), selected = "cypal1920"
                         ),
                         
-                        selectizeInput("question", "School Selection", choices = names(schoolsdb), selected = "Borough"
+                        selectizeInput("question", "School Selection", choices = names(schoolsdbFiltered), selected = "Borough"
                         ),
                         
                         selectInput("answer", "School Specifics", choices = NULL, selected = NULL, multiple = T),
                         
                         checkboxGroupInput("crime", "Crime Greater Manchester Police (June 2019-2020)",
-                                           choices = sort(unique(ss192$object_of_search)))
+                                           choices = sort(unique(ss192$object_of_search))),
+                        
+                        #Projects! It works, need to set up server side
+                        selectInput('test', 'Projects', choices = unique(scan(text=schoolsdb$`Is this school involved in any other projects?`, what='', sep='|')))
                     ),
                     menuItem("Graphs", tabName = "graphs", icon = icon("chart-line")),
                     conditionalPanel(
                         'input.sidebarid == "graphs"',
-                        selectInput("topic", "Background Data", list(
+                        selectInput("topic", "Dataset", list(
                             "Physical Activity" = c("Active Lives Children and Young People" = "cypal_time",
                                                     "Active Lives Adult" = "al_time"),
                             "Health" = c("Prevalence of obesity (including severe obesity): Reception" = "ncmprec_time",
@@ -104,7 +107,7 @@ dashboardPage(
                 fluidRow(
                     width = '100%',
                     shinycssloaders::withSpinner(
-                    leafletOutput("map", width = "99%"), type = 4, color = "#E6007E"), 
+                    leafletOutput("map", width = "99%", height = 600), type = 4, color = "#E6007E"), 
 
                     tags$head(
                         tags$style(HTML('#go{background-color:#E6007E}'))
