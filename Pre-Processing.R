@@ -312,13 +312,13 @@ sat_clubs <- read.csv("data/sat_clubs.csv")
 ## Schools Database ----
 
 postcodes <- read.csv("data/ukpostcodes.csv")
-db <- read_csv("data/SchoolsDb150121.csv")
+db <- read_csv("data/SchoolsDb310821.csv")
 schools <- read_csv("data/Schools.csv")
 schoolslatlong <- left_join(schools, postcodes, by = c("Postcode" ="postcode"))
 schoolsdb <- left_join(db, schoolslatlong, by = c("EntityID" = "GroupID"))
-schoolsdb <- schoolsdb[-c(1:2,4:9, 65:68)]
+schoolsdb <- schoolsdb[-c(1:2,4:9, 67:70)]
 
-schoolsdbFiltered <- schoolsdb[c(4:6,11,14,15,17,19,21,22,24,38,40,44,49,50,51,53)]
+schoolsdbFiltered <- schoolsdb[c(4:6,12,15,16,18,20,22,23,25,35,39,41,45,50,51:55)]
 
 print(names(schoolsdbFiltered))
 

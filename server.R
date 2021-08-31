@@ -237,7 +237,13 @@ function(input,output, session){
     })
     
     df <- reactive({
-        df = schoolsdb[schoolsdbFiltered[[input$question]] %in% input$answer,]
+        if (input$question == 'Is this school involved in any other projects?') {
+            df <-  filter(schoolsdb, grepl(input$answer, `Is this school involved in any other projects?`))
+        }
+        else {
+            df <- schoolsdb[schoolsdbFiltered[[input$question]] %in% input$answer,]
+            }
+        return(df)
     })
     
     df2 <- reactive({

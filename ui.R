@@ -53,10 +53,8 @@ dashboardPage(
                         selectInput("answer", "School Specifics", choices = NULL, selected = NULL, multiple = T),
                         
                         checkboxGroupInput("crime", "Crime Greater Manchester Police (June 2019-2020)",
-                                           choices = sort(unique(ss192$object_of_search))),
+                                           choices = sort(unique(ss192$object_of_search)))
                         
-                        #Projects! It works, need to set up server side
-                        selectInput('test', 'Projects', choices = unique(scan(text=schoolsdb$`Is this school involved in any other projects?`, what='', sep='|')))
                     ),
                     menuItem("Graphs", tabName = "graphs", icon = icon("chart-line")),
                     conditionalPanel(

@@ -267,6 +267,7 @@ poverty_time_Eng <- read.csv("data/Poverty_Eng.csv")
 
 poverty_time <- bind_rows(poverty_time, poverty_time_Eng)
 
+
 ## Inactivity ----
 
 cypal_time <- read_excel("data/Active Lives Template v20.xlsx", 
@@ -286,12 +287,13 @@ al_time <- rename(al_time, c("AreaName"="Area", "Timeperiod" = "Release", "Value
 
 
 postcodes <- read.csv("data/ukpostcodes.csv")
-db <- read_csv("data/SchoolsDb150121.csv")
+db <- read_csv("data/SchoolsDb310821.csv")
 schools <- read_csv("data/Schools.csv")
 schoolslatlong <- left_join(schools, postcodes, by = c("Postcode" ="postcode"))
 schoolsdb <- left_join(db, schoolslatlong, by = c("EntityID" = "GroupID"))
-schoolsdb <- schoolsdb[-c(1:2,4:9, 65:68)]
+schoolsdb <- schoolsdb[-c(1:2,4:9, 67:70)]
 
+schoolsdbFiltered <- schoolsdb[c(4:6,12,15,16,18,20,22,23,25,35,39,41,45,50,51:55)]
 
 # Other -------------------------------------------------------------------
 
