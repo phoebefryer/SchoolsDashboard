@@ -9,9 +9,9 @@ library(dashboardthemes);
 
 dashboardPage(
     dashboardHeader(title = span("Schools Dashboard", style = "color:#E6007E"),
-                    tags$li(a(href = 'https://www.greatersport.co.uk/',
+                    tags$li(a(href = 'https://www.gmmoving.co.uk/',
                               img(src = 'https://www.greatersport.co.uk/media/2587/gmm_logo_rgb.png',
-                                  title = "GreaterSport", 
+                                  title = "GM Moving", 
                                   height = "30px"),
                               style = "padding-top:10px; padding-bottom:10px;"),
                             class = "dropdown")

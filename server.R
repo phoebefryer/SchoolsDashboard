@@ -231,6 +231,15 @@ function(input,output, session){
                               if (input$question == 'Is this school involved in any other projects?') {
                                   unique(scan(text=schoolsdb$`Is this school involved in any other projects?`, what='', sep='|'))
                               }
+                          else if (input$question == 'School Type - Education Phase') {
+                              unique(scan(text=schoolsdb$`School Type - Education Phase`, what='', sep='|'))
+                          }
+                          else if (input$question == 'Indoor facilities: Does your school have any of the following') {
+                              unique(scan(text=schoolsdb$`Indoor facilities: Does your school have any of the following`, what='', sep='|'))
+                          }
+                          else if (input$question == 'Outdoor facilities: Does your school have any of the following?') {
+                              unique(scan(text=schoolsdb$`Outdoor facilities: Does your school have any of the following?`, what='', sep='|'))
+                          }
                           else {unique(schoolsdbFiltered[input$question])}
         )
         
@@ -239,6 +248,15 @@ function(input,output, session){
     df <- reactive({
         if (input$question == 'Is this school involved in any other projects?') {
             df <-  filter(schoolsdb, grepl((paste0('(\\Q', input$answer, '\\E)', collapse='|')), `Is this school involved in any other projects?`))
+        }
+        else if (input$question == 'School Type - Education Phase') {
+            df <-  filter(schoolsdb, grepl((paste0('(\\Q', input$answer, '\\E)', collapse='|')), `School Type - Education Phase`))
+        }
+        else if (input$question == 'Indoor facilities: Does your school have any of the following') {
+            df <-  filter(schoolsdb, grepl((paste0('(\\Q', input$answer, '\\E)', collapse='|')), `Indoor facilities: Does your school have any of the following`))
+        }
+        else if (input$question == 'Outdoor facilities: Does your school have any of the following?') {
+            df <-  filter(schoolsdb, grepl((paste0('(\\Q', input$answer, '\\E)', collapse='|')), `Outdoor facilities: Does your school have any of the following?`))
         }
         else {
             df <- schoolsdb[schoolsdbFiltered[[input$question]] %in% input$answer,]
@@ -514,7 +532,8 @@ function(input,output, session){
         ggplot(area(), aes(x=Timeperiod, y=Value, group = AreaName)) +
             geom_line(aes(color = AreaName), size = line_size) +
             geom_point(aes(color = AreaName)) +
-            labs(x = "Time", y = "Rate (%)", col="Area") +
+            labs(x = "Time", y = "Rate (%)", col="Area",
+                 caption = source()) +
             ggtitle(graphTitle()) +
             theme_GMM() +
             scale_colour_manual(values = GMM_cols %>% unname)

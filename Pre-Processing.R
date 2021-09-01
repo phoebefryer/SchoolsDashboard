@@ -322,6 +322,10 @@ schoolsdb <- schoolsdb[-c(1:2,4:9, 67:70)]
 
 schoolsdbFiltered <- schoolsdb[c(4:7,12,15,16,18,20,22,23,25,35,39,41,45,50:55)]
 
+print(names(schoolsdbFiltered))
+
+schoolsdb['Indoor facilities: Does your school have any of the following?\r']
+
 # Theme -------------------------------------------------------------------
 
 
