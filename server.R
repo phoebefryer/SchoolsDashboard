@@ -238,7 +238,7 @@ function(input,output, session){
     
     df <- reactive({
         if (input$question == 'Is this school involved in any other projects?') {
-            df <-  filter(schoolsdb, grepl(input$answer, `Is this school involved in any other projects?`))
+            df <-  filter(schoolsdb, grepl((paste0('(\\Q', input$answer, '\\E)', collapse='|')), `Is this school involved in any other projects?`))
         }
         else {
             df <- schoolsdb[schoolsdbFiltered[[input$question]] %in% input$answer,]
@@ -276,7 +276,7 @@ function(input,output, session){
                 opacity = 1,  
                 color = 'black', 
                 fillOpacity = 0
-            )%>%
+            ) %>%
             addPolygons(
                 data = domain(),
                 fillColor = palette(),
@@ -308,35 +308,36 @@ function(input,output, session){
             addMarkers(data = df(),
                        popup = paste0(
                            "<div class='leaflet-popup-scrolled' style='max-width:600px;max-height:200px'>",
-                           "<br>",'<strong>' ,'<h3>',schoolsdb$EntityTitle,'</strong>','</h3>',
+                           "<br>",'<strong>' ,'<h3>',df()$EntityTitle,'</strong>','</h3>',
                            '<i>','<u>',"Overview",'</i>','</u>',
-                           "<br>URN:" ,schoolsdb$`URN.x`,
-                           "<br>Borough: " ,schoolsdb$Borough,
-                           "<br>Phase: " ,schoolsdb$`School Type - Education Phase`,
-                           "<br>School Type: " ,schoolsdb$`Type of School`,
-                           "<br>Academy/Trust: " ,schoolsdb$`Are they part of an academy (single/multi) or trust`,
-                           "<br>Academy/Trust Name: " ,schoolsdb$`Which academy/trust are they part of`,
-                           "<br>Cluster: " ,schoolsdb$`Are they part of a cluster?`,
-                           "<br>Nursery Attached: " ,schoolsdb$`Does this School have a Nursery attached?`,
-                           "<br>Pupils Eligible for Free School Meals: " ,schoolsdb$`Percentage of pupils eligible for Free School Meals`,
-                           "<br>Pupils Eligible for Pupil Premium: " ,schoolsdb$`Percentage of pupils eligible for pupil premium`,
-                           "<br>IMD Decile (1=most deprived): " ,schoolsdb$`IMD Decile`,
-                           "<br>Ofsted: " ,schoolsdb$`Ofsted rating`,    
-                           "<br>Primary Premium Funding: ?" ,schoolsdb$`How much primary premium do they receive?`,
-                           "<br>PESSPA Funding: ?" ,schoolsdb$`How much PESSPA do they receive?`,
+                           "<br>URN:" ,df()$`URN.x`,
+                           "<br>Borough: " ,df()$Borough,
+                           "<br>Phase: " ,df()$`School Type - Education Phase`,
+                           "<br>School Type: " ,df()$`Type of School`,
+                           "<br>Academy/Trust: " ,df()$`Are they part of an academy (single/multi) or trust`,
+                           "<br>Academy/Trust Name: " ,df()$`Which academy/trust are they part of`,
+                           "<br>Cluster: " ,df()$`Are they part of a cluster?`,
+                           "<br>Nursery Attached: " ,df()$`Does this School have a Nursery attached?`,
+                           "<br>Pupils Eligible for Free School Meals: " ,df()$`Percentage of pupils eligible for Free School Meals`,
+                           "<br>Pupils Eligible for Pupil Premium: " ,df()$`Percentage of pupils eligible for pupil premium`,
+                           "<br>IMD Decile (1=most deprived): " ,df()$`IMD Decile`,
+                           "<br>Ofsted: " ,df()$`Ofsted rating`,    
+                           "<br>Primary Premium Funding: ?" ,df()$`How much primary premium do they receive?`,
+                           "<br>PESSPA Funding: ?" ,df()$`How much PESSPA do they receive?`,
                            "<br>",'<i>','<u>',"Daily Mile",'</i>','</u>',
-                           "<br>Signed up to The Daily Mile: ", schoolsdb$`Is this School signed up to the Daily Mile?`,
-                           "<br>Signed up the The Daily Mile Destinations: ", schoolsdb$`Have they signed up for The Daily Mile Destinations?`,
+                           "<br>Signed up to The Daily Mile: ", df()$`Is this School signed up to the Daily Mile?`,
+                           "<br>Signed up the The Daily Mile Destinations: ", df()$`Have they signed up for The Daily Mile Destinations?`,
                            "<br>",'<i>','<u>', "School Games",'</i>','</u>',
-                           "<br>Involved in L2 School Games: ", schoolsdb$`Does this school get involved with the School Games at Level 2?`,
-                           "<br>School Games Mark: ", schoolsdb$`What level of School Games mark has this school achieved?`,
+                           "<br>Involved in L2 School Games: ", df()$`Does this school get involved with the School Games at Level 2?`,
+                           "<br>School Games Mark: ", df()$`What level of School Games mark has this school achieved?`,
                            "<br>",'<i>','<u>', "Active Lives",'</i>','</u>',
-                           "<br>Selected: ", schoolsdb$`Have they been selected (term)?`,
-                           "<br>Opted In: ", schoolsdb$`Has this school opted into the Active Lives CYP Survey?`,
-                           "<br>Completed: ", schoolsdb$`Have they completed the survey`,
+                           "<br>Selected: ", df()$`Have they been selected (term)?`,
+                           "<br>Opted In: ", df()$`Has this school opted into the Active Lives CYP Survey?`,
+                           "<br>Completed: ", df()$`Have they completed the survey`,
                            "<br>",'<i>','<u>', "Open Facilities",'</i>','</u>',
-                           "<br>Facilities Open: ", schoolsdb$`Are their facilities open?`,
-                           "<br>Facilities Quality: ", schoolsdb$`Overall facilities quality`)
+                           "<br>Facilities Open: ", df()$`Are their facilities open?`,
+                           "<br>Facilities Quality: ", df()$`Overall facilities quality`,
+                           "<br>Projects and Programmes: ", df()$`Is this school involved in any other projects?`)
             ) %>%
             addLegend(
                 position = "bottomright",
