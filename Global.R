@@ -285,12 +285,14 @@ al_time <- rename(al_time, c("AreaName"="Area", "Timeperiod" = "Release", "Value
 # Database ----------------------------------------------------------------
 
 
+
 postcodes <- read.csv("data/ukpostcodes.csv")
-db <- read_csv("data/SchoolsDb150121.csv")
-schools <- read_csv("data/Schools.csv")
+db <- read_csv("data/SchoolsDb310821.csv")
+schools <- read_csv("data/Schools2021.csv")
 schoolslatlong <- left_join(schools, postcodes, by = c("Postcode" ="postcode"))
 schoolsdb <- left_join(db, schoolslatlong, by = c("EntityID" = "GroupID"))
-schoolsdb <- schoolsdb[-c(1:2,4:9, 65:68)]
+schoolsdb <- schoolsdb[-c(1:2,4:9, 67:70)]
+
 
 
 # Other -------------------------------------------------------------------

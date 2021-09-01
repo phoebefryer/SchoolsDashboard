@@ -47,7 +47,7 @@ dashboardPage(
                         )
                         ),
                         
-                        selectizeInput("question", "School Selection", choices = names(schoolsdb), selected = "Borough"
+                        selectizeInput("question", "School Selection", choices = names(schoolsdbFiltered), selected = "Borough"
                         ),
                         
                         selectInput("answer", "School Specifics", choices = NULL, selected = NULL, multiple = T),

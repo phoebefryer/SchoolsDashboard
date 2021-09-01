@@ -227,11 +227,23 @@ function(input,output, session){
 ## Reactive filtering ----    
     observe({
         updateSelectInput(session, "answer",
-                          choices = unique(schoolsdb[input$question]))
+                          choices = 
+                              if (input$question == 'Is this school involved in any other projects?') {
+                                  unique(scan(text=schoolsdb$`Is this school involved in any other projects?`, what='', sep='|'))
+                              }
+                          else {unique(schoolsdbFiltered[input$question])}
+        )
+        
     })
     
     df <- reactive({
-        df = schoolsdb[schoolsdb[[input$question]] %in% input$answer,]
+        if (input$question == 'Is this school involved in any other projects?') {
+            df <-  filter(schoolsdb, grepl(input$answer, `Is this school involved in any other projects?`))
+        }
+        else {
+            df <- schoolsdb[schoolsdbFiltered[[input$question]] %in% input$answer,]
+        }
+        return(df)
     })
     
     df2 <- reactive({
