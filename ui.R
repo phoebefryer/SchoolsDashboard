@@ -63,8 +63,9 @@ dashboardPage(
                                                     "Active Lives Adult" = "al_time"),
                             "Health" = c("Prevalence of obesity (including severe obesity): Reception" = "ncmprec_time",
                                          "Prevalence of obesity (including severe obesity): Year 6" = "ncmp6_time",
-                                         "School readiness: percentage of children achieving a good level of development at the end of Reception" = "readiness_time",
-                                         "School Readiness: percentage of children with free school meal status achieving a good level of development at the end of Reception" = "readiness_fsm_time"),
+                                         "School readiness: percentage of children achieving a good level of development at the end of Reception" = "readiness_time"#,
+                                         #"School Readiness: percentage of children with free school meal status achieving a good level of development at the end of Reception" = "readiness_fsm_time"
+                                         ),
                             "Other" = c("16-17 Year Olds NEET" = "neet_time",
                                         "Children in Care (per 10,000)" = "care_time",
                                         "Childhood Poverty (After Housing Costs)" = "poverty_time")

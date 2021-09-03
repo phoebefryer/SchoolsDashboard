@@ -612,8 +612,8 @@ NCMP6_time <- fingertips_data(IndicatorID = 90323, AreaTypeID = 202) %>%
 
 theme_GMM <- function() {
   
-  font <- "Helvetica"
-  fontColour <- "#63666A"
+  font <- windowsFonts("Helvetica")  #gOTHAM TITLES
+  fontColour <- "#706F6F"
   
   theme(
     #grid elements
@@ -627,7 +627,7 @@ theme_GMM <- function() {
     #key text
     plot.title = element_text(
       family = font,
-      colour = "#E5007E",
+      colour = "#8C1D82",
       size = 16,
       face = 'bold',          
       hjust = 0,              
@@ -648,13 +648,14 @@ theme_GMM <- function() {
     axis.title = element_text(             
       family = font,    
       colour = fontColour,
-      size = 14),             
+      size = 12),             
     
     axis.text = element_text(            
       family = font, 
       colour = fontColour,
       size = 12),              
     
+    axis.title.y = element_text(hjust = 1, vjust = 1),
     axis.text.x = element_text(          
       margin=margin(5, b = 10)),
     
@@ -665,13 +666,11 @@ theme_GMM <- function() {
     legend.title = element_blank(),
     legend.key = element_blank(),
     legend.text = element_text(family = font,
-                               size = 10,
-                               color  = fontColour),
-    
-    #general
-    plot.title.position = "plot"
+                               size = 12,
+                               color  = fontColour)
   )
 }
+
 
 
 library(devtools)
@@ -839,18 +838,16 @@ theme(
 )
 
 GMM_cols <- c(
+  `purple` = "#8C1D82",
   `pink` = "#E5007E",
-  `blue` = "#009CDD",
-  `green` = "#84BD00",
-  `orange` = "#ED8B00",
-  `purple` = "#5B2D86",
-  `yellow` = "#FCCA58",
+  `dark blue` = "#0069b4",
+  `pale purple` = "#8A5EA4",
+  `orange` = "#F39200",
+  `green` = "#95C11F",
+  `blue` = "#009FE3",
   `turquoise` = "#009E83",
-  `pale purple` = "#8A6EAD",
-  `pale pink` = "#D7697A",
-  `red` = "#e30333",
-  `pale blue` = "#99d6f0",
-  `pale orange` = "#f7c799" 
+  `yellow` = "#Fdc300",
+  `grey` = "#706f6f" 
 )
 
 scale_GMM <- function(type = "fill", ...) {

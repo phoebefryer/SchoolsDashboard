@@ -318,18 +318,16 @@ gstheme <- create_theme(
 ## GMM Theme for graphs ----
 
 GMM_cols <- c(
-  `blue` = "#009FE3",
+  `purple` = "#8C1D82",
   `pink` = "#E5007E",
+  `dark blue` = "#0069b4",
+  `pale purple` = "#8A5EA4",
   `orange` = "#F39200",
   `green` = "#95C11F",
-  `purple` = "#8C1D82",
-  `pale purple` = "#8A5EA4",
+  `blue` = "#009FE3",
   `turquoise` = "#009E83",
-  `dark blue` = "#0069b4",
   `yellow` = "#Fdc300",
-  `grey` = "#706f6f",
-  `blue` = "#5197D1",
-  `black` = "#000000"
+  `grey` = "#706f6f" 
 )
 
 
