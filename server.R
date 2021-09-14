@@ -632,37 +632,7 @@ function(input,output, session){
                " by ", format(round(abs(diff()), 2), nsmall = 2), "%." )
      })
     
-    
-    ###For loop for output$change ----
-    
-    # 
-    # output$change <- for (area in 1:input$area) {
-    #     
-    #     x <- reactive({
-    #         early() %>% filter(AreaName %in% area) 
-    #     })
-    #     
-    #     y <- reactive({
-    #         latest() %>% filter(AreaName %in% area) 
-    #     })
-    #     
-    #     diff <- reactive ({
-    #         y()$Value-x()$Value
-    #     })
-    #     
-    #     
-    #     renderText({
-    #         paste("Since baseline the ", graph_title(), "in ", area, " has ", 
-    #               (if ((y()$Value-x()$Value)>0){
-    #                   print("increased")
-    #               } else {
-    #                   print("decreased")
-    #               }),
-    #               " by ", format(round(abs(diff()), 2), nsmall = 2), "%." )
-    #     })
-    #     
-    # }
-    
+
 ## Screenshot ----
     observeEvent(input$go, {
         screenshot(selector = "#chart", filename = "chart")
