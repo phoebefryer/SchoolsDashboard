@@ -609,29 +609,30 @@ function(input,output, session){
         }
         return(t)
     })
-### Reactive area and value ----    
+### Reactive area and value ----
     x <- reactive({
-        early() %>% filter(AreaName %in% input$area) 
-    })
+     early() %>% filter(AreaName %in% input$area)
+     })
     
-    y <- reactive({
-        latest() %>% filter(AreaName %in% input$area) 
-    })
+     y <- reactive({
+         latest() %>% filter(AreaName %in% input$area)
+     })
     
-    diff <- reactive ({
-        y()$Value-x()$Value
-    })
+     diff <- reactive ({
+         y()$Value-x()$Value
+     })
+### Text ----
+     output$change <- renderText({
+         paste("Since baseline the ", graph_title(), "in ", input$area, " has ",
+               (if ((y()$Value-x()$Value)>0){
+                   print("increased")
+               } else {
+                   print("decreased")
+               }),
+               " by ", format(round(abs(diff()), 2), nsmall = 2), "%." )
+     })
     
-### Text ----    
-    output$change <- renderText({
-        paste("Since baseline the ", graph_title(), "in ", input$area, " has ", 
-              (if ((y()$Value-x()$Value)>0){
-                  print("increased")
-              } else {
-                  print("decreased")
-              }),
-              " by ", format(round(abs(diff()), 2), nsmall = 2), "%." )
-    })
+
 ## Screenshot ----
     observeEvent(input$go, {
         screenshot(selector = "#chart", filename = "chart")
