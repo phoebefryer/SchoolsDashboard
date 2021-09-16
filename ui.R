@@ -4,17 +4,21 @@ library(jsonlite); library(rjson); library(rgdal);library(geojsonio); library(ma
 library(nomisr); library(shinydashboard);library(shinyWidgets);library(tidyverse);library(sf);library(ggiraph);
 library(scales); library(htmltools);library(htmlwidgets);library(nomisr);library(readxl);
 library(mapview);library(fresh); library(leaflet.extras); library(rsconnect); library(shinyscreenshot);
-library(dashboardthemes); 
+library(dashboardthemes); library(ggtext)
 
 
 dashboardPage(
-    dashboardHeader(title = span("Schools Dashboard", style = "color:#E6007E"),
+    dashboardHeader(title = span("Schools Dashboard", style = "color:#E6007E; font-size:22px"),
                     tags$li(a(href = 'https://www.gmmoving.co.uk/',
                               img(src = 'https://www.greatersport.co.uk/media/2587/gmm_logo_rgb.png',
                                   title = "GM Moving", 
-                                  height = "30px"),
-                              style = "padding-top:10px; padding-bottom:10px;"),
-                            class = "dropdown")
+                                  height = "50px"),
+                              style = "padding-top:0px; padding-bottom:0px;"),
+                            class = "dropdown",
+                            tags$style(".main-header {max-height: 50px}"),
+                            tags$style(".main-header .logo {height: 50px;}"),
+                            tags$style(".sidebar-toggle {height: 50px!important;}"),
+                            tags$style(".navbar {min-height:20px !important}"))
     ),
     dashboardSidebar(width = 300,
         sidebarMenu(id = "sidebarid", 
@@ -23,9 +27,9 @@ dashboardPage(
                     conditionalPanel(
                         'input.sidebarid == "mapping"',
                         selectInput("domain", "Background Data", list(
-                            "Physical Activity" = c("Less Active (2017-18)" = "cypal1718",
+                            "Physical Activity" = c("Less Active (2019-20)" = "cypal1920",
                                                     "Less Active (2018-19)" = "cypal1819",
-                                                    "Less Active (2019-20)" = "cypal1920"),
+                                                    "Less Active (2017-18)" = "cypal1718"),
                             "Health" = c("Prevalence of obesity (including severe obesity): Reception" = "ncmprec",
                                          "Prevalence of obesity (including severe obesity): Year 6" = "ncmp6",
                                          "Prevalence of obesity (including severe obesity): Reception (small area)" = "ncmprecMSOA",
@@ -44,9 +48,9 @@ dashboardPage(
                                         "Childhood Poverty (After Housing Costs)" = "poverty",
                                         "Access to Private Greenspace" = "pvtGreenspace",
                                         "Access to Public Greenspace" = "pubGreenspace")
-                        )
+                        ), selected = "cypal1920"
                         ),
-                        
+
                         selectizeInput("question", "School Selection", choices = names(schoolsdbFiltered), selected = "Borough"
                         ),
                         
@@ -84,11 +88,11 @@ dashboardPage(
             tabItem(
                 tabName = "home",
                 fluidRow(HTML("<h2>", "Welcome to the GreaterSport Schools Dashboard.", "</h2>")),
-                fluidRow("This dashboard has been created in conjunction with our Schools Database with the purpose
+                fluidRow(style = "font-size:20px;", "This dashboard has been created in conjunction with our Schools Database with the purpose
                          of making information relating to schools and children and young people across Greater Manchester 
                          more accesible.We hope that this tool proves useful in helping improve the health and wellbeing 
                          of children and young people across the county."),
-                fluidRow(HTML("We would love to hear how you are using this dashboard, what decisions it may have informed or 
+                fluidRow(style = "font-size:20px;",HTML("We would love to hear how you are using this dashboard, what decisions it may have informed or 
                          what data and information is missing. Please contact<a href='mailto:phoebe@greatersport.co.uk'> Phoebe Fryer ")),
                 tags$footer(
                     fluidRow(
@@ -162,7 +166,7 @@ dashboardPage(
                 fluidRow(
                     textOutput("change"),
                     tags$head(tags$style("#change {colour: #63666A;
-                                         font-size: 14px}"))
+                                         font-size: 20px}"))
                 ),
                 tags$footer(
                     fluidRow(

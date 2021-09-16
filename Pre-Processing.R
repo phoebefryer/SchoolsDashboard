@@ -318,9 +318,10 @@ schools <- read_csv("data/Schools2021.csv")
 schoolslatlong <- left_join(schools, postcodes, by = c("Postcode" ="postcode"))
 schoolsdb <- left_join(db, schoolslatlong, by = c("EntityID" = "GroupID"))
 schoolsdb <- schoolsdb[-c(1:2,4:9, 67:70)]
+schoolsdb <- rename(schoolsdb, "What term have they been selected to complete Active Lives"= "Have they been selected (term)?")
 
 
-schoolsdbFiltered <- schoolsdb[c(4:7,12,15,16,18,20,22,23,25,35,39,41,45,50:55)]
+schoolsdbFiltered <- schoolsdb[c(4:7,12,15,16,18,20,22,23,25,35,39,41,45,50,51, 53:55)]
 
 print(names(schoolsdbFiltered))
 
@@ -628,7 +629,7 @@ theme_GMM <- function() {
     plot.title = element_text(
       family = font,
       colour = "#8C1D82",
-      size = 16,
+      size = 24,
       face = 'bold',          
       hjust = 0,              
       vjust = 2),         
@@ -636,24 +637,24 @@ theme_GMM <- function() {
     plot.subtitle = element_text(         
       family = font,
       colour = fontColour,
-      size = 14),               
+      size = 18),               
     
     plot.caption = element_text(          
       family = font,  
       colour = fontColour,
-      size = 12,                 
+      size = 18,                 
       hjust = 0),               
     
     #general text
     axis.title = element_text(             
       family = font,    
       colour = fontColour,
-      size = 12),             
+      size = 18),             
     
     axis.text = element_text(            
       family = font, 
       colour = fontColour,
-      size = 12),              
+      size = 16),              
     
     axis.title.y = element_text(hjust = 1, vjust = 1),
     axis.text.x = element_text(          
@@ -666,7 +667,7 @@ theme_GMM <- function() {
     legend.title = element_blank(),
     legend.key = element_blank(),
     legend.text = element_text(family = font,
-                               size = 12,
+                               size = 18,
                                color  = fontColour)
   )
 }
