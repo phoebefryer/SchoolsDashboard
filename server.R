@@ -156,17 +156,17 @@ function(input,output, session){
         } else if (input$domain == "cypal1920") {
             t <- "Less Active (2019-20)"
         } else if (input$domain == "ncmprec") {
-            t <- "Prevalence of obesity (including severe obesity): Reception"
+            t <- "Prevalence of obesity</br>(including severe obesity):</br>Reception"
         } else if (input$domain == "ncmp6") {
-            t <- "Prevalence of obesity (including severe obesity): Year 6"
+            t <- "Prevalence of obesity</br>(including severe obesity):</br>Year 6"
         } else if (input$domain == "ncmprecMSOA") {
-            t <- "Prevalence of obesity (including severe obesity): Reception"
+            t <- "Prevalence of obesity</br>(including severe obesity):</br>Reception"
         } else if (input$domain == "ncmp6MSOA") {
-            t <- "Prevalence of obesity (including severe obesity): Year 6"
+            t <- "Prevalence of obesity</br>(including severe obesity):</br>Year 6"
         } else if (input$domain == "readiness") {
-            t <- "School readiness: percentage of children achieving a good level of development at the end of Reception"
+            t <- "School readiness: percentage of</br>children achieving a good</br>level of development at the</br>end of Reception"
         } else if (input$domain == "readiness_fsm") {
-            t <- "School Readiness: percentage of children with free school meal status achieving a good level of development at the end of Reception"
+            t <- "School Readiness: percentage of</br>children with free school meal status</br>achieving a good level of</br>development at the end of Reception"
         } else if (input$domain == "care") {
             t <- "Children in Care (per 10,000)"
         } else if (input$domain == "neet") {
@@ -190,12 +190,12 @@ function(input,output, session){
         } else if (input$domain == "pvtGreenspace") {
             t <- "Percentage of adresses with private outdoor space"
         } else if (input$domain == "pubGreenspace") {
-            t <- "Average number of  Parks, Public Gardens, or Playing Fields within 1km"
+            t <- "Average number of  Parks, Public Gardens,</br>or Playing Fields within 1km"
         }
         return(t)
     })
 ## Source ----    
-    source <-  reactive({
+    dataSource <-  reactive({
         if (input$domain == "cypal1819") {
             con <- "Source: Sport England Active Lives Children and Young People Survey, 2018/19"
         } else if (input$domain == "cypal1718") {
@@ -229,18 +229,23 @@ function(input,output, session){
         updateSelectInput(session, "answer",
                           choices = 
                               if (input$question == 'Is this school involved in any other projects?') {
-                                  unique(scan(text=schoolsdb$`Is this school involved in any other projects?`, what='', sep='|'))
+                                  sort(unique(scan(text=schoolsdb$`Is this school involved in any other projects?`, what='', sep='|')))
                               }
                           else if (input$question == 'School Type - Education Phase') {
-                              unique(scan(text=schoolsdb$`School Type - Education Phase`, what='', sep='|'))
+                              sort(unique(scan(text=schoolsdb$`School Type - Education Phase`, what='', sep='|')))
                           }
                           else if (input$question == 'Indoor facilities: Does your school have any of the following') {
-                              unique(scan(text=schoolsdb$`Indoor facilities: Does your school have any of the following`, what='', sep='|'))
+                              sort(unique(scan(text=schoolsdb$`Indoor facilities: Does your school have any of the following`, what='', sep='|')))
                           }
                           else if (input$question == 'Outdoor facilities: Does your school have any of the following?') {
-                              unique(scan(text=schoolsdb$`Outdoor facilities: Does your school have any of the following?`, what='', sep='|'))
+                              sort(unique(scan(text=schoolsdb$`Outdoor facilities: Does your school have any of the following?`, what='', sep='|')))
                           }
-                          else {unique(schoolsdbFiltered[input$question])}
+                          else if (input$question == 'What providers do they use for sport and physical activity?') {
+                              sort(unique(scan(text=schoolsdb$`What providers do they use for sport and physical activity?`, what='', sep='|')))
+                          }
+                          else {
+                              unique(schoolsdbFiltered[input$question])
+                              }
         )
         
     })
@@ -365,7 +370,7 @@ function(input,output, session){
                 labels = labels()
             ) %>%
             addControl(
-                tags$em(source()), position = "bottomleft"
+                tags$em(dataSource()), position = "bottomleft"
             ) %>%
             
             onRender(
@@ -511,13 +516,13 @@ function(input,output, session){
         topic() %>% filter(AreaName %in% input$area)
     })
 ## Y axis ----    
-    ylab <- reactive({
+    ylabel <- reactive({
         if ((input$topic == "cypal_time")|(input$topic == "al_time")|(input$topic == "ncmprec_time")|
             (input$topic == "ncmp6_time")|(input$topic == "readiness_time")|(input$topic == "readiness_fsm_time")|
             (input$topic == "neet_time")|(input$topic == "poverty_time")) {
             y <- "Percentage (%)"
         } else if (input$topic == "care_time") {
-            y <- "Rate per 10,00-"
+            y <- "Rate per 10,000"
         }
         return(y)
     })
@@ -532,10 +537,11 @@ function(input,output, session){
         ggplot(area(), aes(x=Timeperiod, y=Value, group = AreaName)) +
             geom_line(aes(color = AreaName), size = line_size) +
             geom_point(aes(color = AreaName)) +
-            labs(x = "Time", y = "Rate (%)", col="Area",
+            labs(x = "Time", y = ylabel(), col="Area",
                  caption = source()) +
             ggtitle(graphTitle()) +
             theme_GMM() +
+            theme(plot.caption = element_text()) +
             scale_colour_manual(values = GMM_cols %>% unname)
 
     })
@@ -629,7 +635,7 @@ function(input,output, session){
                } else {
                    print("decreased")
                }),
-               " by ", format(round(abs(diff()), 2), nsmall = 2), "%." )
+               " by ", format(round(abs(diff()), 1), nsmall = 1), "%." )
      })
     
 
