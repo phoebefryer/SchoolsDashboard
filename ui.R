@@ -8,9 +8,10 @@ library(dashboardthemes); library(ggtext)
 
 
 dashboardPage(
+    title = "Schools Dashboard",
     dashboardHeader(title = span("Schools Dashboard", style = "color:#E6007E; font-size:22px"),
                     tags$li(a(href = 'https://www.gmmoving.co.uk/',
-                              img(src = 'https://www.greatersport.co.uk/media/2587/gmm_logo_rgb.png',
+                              img(src = 'GMM_Logo.png',
                                   title = "GM Moving", 
                                   height = "50px"),
                               style = "padding-top:0px; padding-bottom:0px;"),
@@ -87,29 +88,32 @@ dashboardPage(
         tabItems(
             tabItem(
                 tabName = "home",
-                fluidRow(HTML("<h2>", "Welcome to the GreaterSport Schools Dashboard.", "</h2>")),
-                fluidRow(style = "font-size:20px;", "This dashboard has been created in conjunction with our Schools Database with the purpose
+                fluidRow(style = "margin-left:5px", HTML("<h2>", "Welcome to the GreaterSport Schools Dashboard.", "</h2>")),
+                fluidRow(style = "font-size:20px; margin-left:5px", "This dashboard has been created in conjunction with our Schools Database with the purpose
                          of making information relating to schools and children and young people across Greater Manchester 
                          more accesible.We hope that this tool proves useful in helping improve the health and wellbeing 
                          of children and young people across the county."),
-                fluidRow(style = "font-size:20px;",HTML("We would love to hear how you are using this dashboard, what decisions it may have informed or 
-                         what data and information is missing. Please contact<a href='mailto:phoebe@greatersport.co.uk'> Phoebe Fryer ")),
+                fluidRow(style = "font-size:20px; margin-left:5px",HTML("We would love to hear how you are using this dashboard, what decisions it may have informed or 
+                         what data and information is missing. Please contact<a href='mailto:phoebe@greatersport.co.uk'> Phoebe Fryer.</a>")),
                 tags$footer(
                     fluidRow(
                         "Developed in ",
                         a(href = "https://cran.r-project.org/", target = "_blank", "R"),
                         " by ",
                         a(href = "https://www.greatersport.co.uk/", target = "_blank", "GreaterSport"),
-                        "."),
+                        " under the ",
+                        a(href = "https://creativecommons.org/licenses/by-nc/4.0/legalcode", target = "_blank", "CC BY-NC"),
+                        " licence"),
                     style = "position:fixed; text-align:center; left: 0; bottom:0; width:100%; z-index:1000; height:30px; color: #63666A; padding: 5px 20px; background-color: #FFFFFF"
                 )
             ),
             tabItem(
                 tabName = "mapping",
                 fluidRow(
+                    style = "margin-left:5px; margin-right:5px",
                     width = '100%',
                     shinycssloaders::withSpinner(
-                    leafletOutput("map", width = "99%"), type = 4, color = "#E6007E"), 
+                    leafletOutput("map", width = "100%"), type = 4, color = "#E6007E"), 
 
                     tags$head(
                         tags$style(HTML('#go{background-color:#E6007E}'))
@@ -117,7 +121,7 @@ dashboardPage(
                     actionButton("go", "Download screenshot of the map", icon("download")),
 
                     fluidRow(
-                        tags$h1("I Greater Manchester Overview"),
+                        tags$h1(style = "margin-left:15px", "Greater Manchester Overview"),
                         tags$style(".small-box.bg-purple { background-color: #E6007E !important; color: #FFFFFF !important; }"),
                         tags$style(".small-box.bg-fuchsia { background-color: #009fe3 !important; color: #FFFFFF !important; }"),
                         tags$style(".fa-graduation-cap { color: #FF56B3}"),
@@ -133,7 +137,7 @@ dashboardPage(
                         valueBoxOutput("Trusts")
                     ),
                     fluidRow(
-                        tags$h2("I Project & Programme Overview: 2020/21"),
+                        tags$h2(style = "margin-left:15px", "Project & Programme Overview: 2020/21"),
                         valueBoxOutput("DM", width = 3),
                         valueBoxOutput("SGL2", width = 3),
                         valueBoxOutput("SGL3", width = 3),
@@ -147,7 +151,7 @@ dashboardPage(
                         " by ",
                         a(href = "https://www.greatersport.co.uk/", target = "_blank", "GreaterSport"),
                         " under the ",
-                        a(href = "https://www.trafforddatalab.io/LICENSE.txt", target = "_blank", "MIT"),
+                        a(href = "https://creativecommons.org/licenses/by-nc/4.0/legalcode", target = "_blank", "CC BY-NC"),
                         " licence"),
                     style = "position:fixed; text-align:center; left: 0; bottom:0; width:100%; z-index:1000; height:30px; color: #63666A; padding: 5px 20px; background-color: #FFFFFF"
                 )
@@ -155,6 +159,7 @@ dashboardPage(
             tabItem(
                 tabName = "graphs",
                 fluidRow(
+                    style = "margin-left:5px; margin-right:5px",
                     width = "100%",
                     plotOutput("chart"),
                 ),
@@ -164,6 +169,7 @@ dashboardPage(
                 actionButton("run", "Download screenshot of the graph", icon("download")),
                 
                 fluidRow(
+                    style = "margin-left:5px",
                     textOutput("change"),
                     tags$head(tags$style("#change {colour: #63666A;
                                          font-size: 20px}"))
@@ -174,7 +180,9 @@ dashboardPage(
                         a(href = "https://cran.r-project.org/", target = "_blank", "R"),
                         " by ",
                         a(href = "https://www.greatersport.co.uk/", target = "_blank", "GreaterSport"),
-                        "."),
+                        " under the ",
+                        a(href = "https://creativecommons.org/licenses/by-nc/4.0/legalcode", target = "_blank", "CC BY-NC"),
+                        " licence"),
                     style = "position:fixed; text-align:center; left: 0; bottom:0; width:100%; z-index:1000; height:30px; color: #63666A; padding: 5px 20px; background-color: #FFFFFF"
                 )
             )

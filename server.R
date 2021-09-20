@@ -287,10 +287,11 @@ function(input,output, session){
             addTiles(
                 options = tileOptions(minZoom = 9, maxZoom = 25)
             ) %>% 
-            addLogo("https://www.greatersport.co.uk/media/3405/gs-supporting-gm-moving.png",
+            addLogo("white.png",
                     url = "https://www.greatersport.co.uk/",
                     alpha = 1,
-                    width = 179,
+                    width = 231,
+                    height = 24,
                     position = "topleft") %>%
             addSearchOSM() %>%
             addPolygons(
@@ -332,7 +333,7 @@ function(input,output, session){
                        popup = paste0(
                            "<div class='leaflet-popup-scrolled' style='max-width:600px;max-height:200px'>",
                            "<br>",'<strong>' ,'<h3>',df()$EntityTitle,'</strong>','</h3>',
-                           '<i>','<u>',"Overview",'</i>','</u>',
+                           '<strong>','<u>',"Overview",'</strong>','</u>',
                            "<br>URN:" ,df()$`URN.x`,
                            "<br>Borough: " ,df()$Borough,
                            "<br>Phase: " ,df()$`School Type - Education Phase`,
@@ -347,17 +348,17 @@ function(input,output, session){
                            "<br>Ofsted: " ,df()$`Ofsted rating`,    
                            "<br>Primary Premium Funding: ?" ,df()$`How much primary premium do they receive?`,
                            "<br>PESSPA Funding: ?" ,df()$`How much PESSPA do they receive?`,
-                           "<br>",'<i>','<u>',"Daily Mile",'</i>','</u>',
+                           "<br>",'<strong>','<u>',"Daily Mile",'</strong>','</u>',
                            "<br>Signed up to The Daily Mile: ", df()$`Is this School signed up to the Daily Mile?`,
                            "<br>Signed up the The Daily Mile Destinations: ", df()$`Have they signed up for The Daily Mile Destinations?`,
-                           "<br>",'<i>','<u>', "School Games",'</i>','</u>',
+                           "<br>",'<strong>','<u>', "School Games",'</strong>','</u>',
                            "<br>Involved in L2 School Games: ", df()$`Does this school get involved with the School Games at Level 2?`,
                            "<br>School Games Mark: ", df()$`What level of School Games mark has this school achieved?`,
-                           "<br>",'<i>','<u>', "Active Lives",'</i>','</u>',
+                           "<br>",'<strong>','<u>', "Active Lives",'</strong>','</u>',
                            "<br>Selected: ", df()$`Have they been selected (term)?`,
                            "<br>Opted In: ", df()$`Has this school opted into the Active Lives CYP Survey?`,
                            "<br>Completed: ", df()$`Have they completed the survey`,
-                           "<br>",'<i>','<u>', "Open Facilities",'</i>','</u>',
+                           "<br>",'<strong>','<u>', "Open Facilities",'</strong>','</u>',
                            "<br>Facilities Open: ", df()$`Are their facilities open?`,
                            "<br>Facilities Quality: ", df()$`Overall facilities quality`,
                            "<br>Projects and Programmes: ", df()$`Is this school involved in any other projects?`)
