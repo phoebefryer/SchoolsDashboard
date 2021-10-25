@@ -1,14 +1,10 @@
-library(classInt); library(viridis);library(leaflet); library (dplyr); library(tidyverse) ; library(sf) ; 
-library(shiny); library(htmlwidgets); library(readxl); library(fingertipsR); library(leaflet.extras); library(httr);
-library(jsonlite); library(rjson); library(rgdal);library(geojsonio); library(mapview); library(leafem); library(ukpolice);
-library(nomisr); library(shinydashboard);library(shinyWidgets);library(tidyverse);library(sf);library(ggiraph);
-library(scales); library(htmltools);library(htmlwidgets);library(nomisr);library(readxl);
-library(mapview);library(fresh); library(leaflet.extras); library(rsconnect); library(shinyscreenshot);
-library(dashboardthemes); library(ggtext)
 
-
-dashboardPage(
+ui <- dashboardPage(
     title = "Schools Dashboard",
+
+# Header ------------------------------------------------------------------
+## Specifies size of header nav bar and adds in logo which directs to GMM site
+
     dashboardHeader(title = span("Schools Dashboard", style = "color:#E6007E; font-size:22px"),
                     tags$li(a(href = 'https://www.gmmoving.co.uk/',
                               img(src = 'GMM_Logo.png',
@@ -21,12 +17,22 @@ dashboardPage(
                             tags$style(".sidebar-toggle {height: 50px!important;}"),
                             tags$style(".navbar {min-height:20px !important}"))
     ),
+
+# Sidebar -----------------------------------------------------------------
+
+
     dashboardSidebar(width = 300,
         sidebarMenu(id = "sidebarid", 
                     menuItem("Home", tabName = "home", icon = icon("home")),
                     menuItem("Mapping", tabName = "mapping", icon = icon("globe")),
+
+## Maps tab and options ----------------------------------------------------
+
                     conditionalPanel(
                         'input.sidebarid == "mapping"',
+
+### Inputs for map backdrop, specifies the dataset to pull on ------------
+
                         selectInput("domain", "Background Data", list(
                             "Physical Activity" = c("Less Active (2019-20)" = "cypal1920",
                                                     "Less Active (2018-19)" = "cypal1819",
@@ -52,17 +58,34 @@ dashboardPage(
                         ), selected = "cypal1920"
                         ),
 
+### Schools database question selection -------------------------------------
+### From the questions asked on the schools db a filtered set of questions are pulled
+### users then can select the topic of interest
+
                         selectizeInput("question", "School Selection", choices = names(schoolsdbFiltered), selected = "Borough"
                         ),
-                        
+
+### Schools database answer selection ---------------------------------------
+### Based on the question previously selected all values are pulled through via a reactive filter
+### By default nothing is selected and multiple options can be chosen
+
                         selectInput("answer", "School Specifics", choices = NULL, selected = NULL, multiple = T),
+
+### Checkboxes to add crime data --------------------------------------------
+### YP related crime
                         
                         checkboxGroupInput("crime", "Crime Greater Manchester Police (June 2019-2020)",
                                            choices = sort(unique(ss192$object_of_search)))
                     ),
+
+## Graphs tab and options --------------------------------------------------
+
                     menuItem("Graphs", tabName = "graphs", icon = icon("chart-line")),
                     conditionalPanel(
                         'input.sidebarid == "graphs"',
+
+### Inputs for graphs, selects the dataset ----------------------------------
+
                         selectInput("topic", "Background Data", list(
                             "Physical Activity" = c("Active Lives Children and Young People" = "cypal_time",
                                                     "Active Lives Adult" = "al_time"),
@@ -76,15 +99,25 @@ dashboardPage(
                                         "Childhood Poverty (After Housing Costs)" = "poverty_time")
                         )
                         ),
+### Select area(s) of interest, Manchester is selected by default -----------
+
                         selectInput("area", "Area",
                                     c("England", "Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan"),
                                     multiple = T, selected = "Manchester")
                     )
         )
     ),
+
+# Body --------------------------------------------------------------------
+
+
     dashboardBody(
+## Sets the theme for the whole app ----------------------------------------
+
         GMMTheme,
-        ## Maps Tab, core dashboard
+
+## Home Tab ------------------------------------------------
+## Intros the dashboard and provides contact details
         tabItems(
             tabItem(
                 tabName = "home",
@@ -107,19 +140,26 @@ dashboardPage(
                     style = "position:fixed; text-align:center; left: 0; bottom:0; width:100%; z-index:1000; height:30px; color: #63666A; padding: 5px 20px; background-color: #FFFFFF"
                 )
             ),
+
+## Maps Tab, core dashboard ------------------------------------------------
+
             tabItem(
                 tabName = "mapping",
                 fluidRow(
                     style = "margin-left:5px; margin-right:5px",
                     width = '100%',
+## Adds the map and spinner when map is loading
                     shinycssloaders::withSpinner(
                     leafletOutput("map", width = "100%"), type = 4, color = "#E6007E"), 
 
                     tags$head(
                         tags$style(HTML('#go{background-color:#E6007E}'))
                     ),
+## Allows download of the map, exports as jpg
                     actionButton("go", "Download screenshot of the map", icon("download")),
 
+## Key stats boxes ---------------------------------------------------------
+## Sets colours to match branding and sets first row of valu boxes
                     fluidRow(
                         tags$h1(style = "margin-left:15px", "Greater Manchester Overview"),
                         tags$style(".small-box.bg-purple { background-color: #E6007E !important; color: #FFFFFF !important; }"),
@@ -136,6 +176,7 @@ dashboardPage(
                         valueBoxOutput("Schools"),
                         valueBoxOutput("Trusts")
                     ),
+## Second row of values boxes
                     fluidRow(
                         tags$h2(style = "margin-left:15px", "Project & Programme Overview: 2020/21"),
                         valueBoxOutput("DM", width = 3),
@@ -156,6 +197,9 @@ dashboardPage(
                     style = "position:fixed; text-align:center; left: 0; bottom:0; width:100%; z-index:1000; height:30px; color: #63666A; padding: 5px 20px; background-color: #FFFFFF"
                 )
             ),
+
+## Graphs tab --------------------------------------------------------------
+## Provides time series graphs of key LA datasets
             tabItem(
                 tabName = "graphs",
                 fluidRow(
@@ -166,6 +210,7 @@ dashboardPage(
                 tags$head(
                     tags$style(HTML('#run{background-color:#E6007E}'))
                 ),
+## Allows download of graphs as image
                 actionButton("run", "Download screenshot of the graph", icon("download")),
                 
                 fluidRow(
@@ -190,3 +235,14 @@ dashboardPage(
     )
 )
 
+
+
+# Log in page -------------------------------------------------------------
+
+polished::secure_ui(ui,
+                    sign_in_page_ui = sign_in_ui_default(
+                        color = "#8c1d82",
+                        company_name = "GM Moving",
+                        logo_top = tags$div(style = "width: 300px; max-width: 100%; color: #FFF;", class =
+                                                "text-center", h1("Schools Database", style = "margin-bottom: 0; margin-top: 30px;"))
+                    ))
