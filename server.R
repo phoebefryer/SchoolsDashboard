@@ -1,6 +1,6 @@
 
 
-function(input,output, session){
+server <- function(input,output, session){
 
 # Maps --------------------------------------------------------------------
 ## Dataset selection ----
@@ -287,13 +287,17 @@ function(input,output, session){
             addTiles(
                 options = tileOptions(minZoom = 9, maxZoom = 25)
             ) %>% 
-            addLogo("white.png",
+            addLogo("GMM_Logo.png",
                     url = "https://www.greatersport.co.uk/",
                     alpha = 1,
-                    width = 231,
-                    height = 24,
+                    # width = 231,
+                    # height = 24,
+                    width = 190,
+                    height = 53,
                     position = "topleft") %>%
+## Adds search functionality - area, postcode etc
             addSearchOSM() %>%
+## Base GM boundaries
             addPolygons(
                 data = gm_la,
                 weight = 2,
@@ -301,6 +305,7 @@ function(input,output, session){
                 color = 'black', 
                 fillOpacity = 0
             ) %>%
+## Data specific layer, adds in the selected data
             addPolygons(
                 data = domain(),
                 fillColor = palette(),
@@ -316,20 +321,15 @@ function(input,output, session){
                     bringToFront = TRUE
                 )
             ) %>%
-            addPolygons(
-                data = lads,
-                weight = 2,
-                opacity = 1,  
-                color = 'black', 
-                fillOpacity = 0
-            ) %>%  
+## Crime data, adds small points marking location of search
             addCircleMarkers(data = df2(),
                              lng = ~longitude, lat = ~latitude,
                              popup = ~object_of_search,
                              radius = 0.5,
                              color = "#84bd00") %>%
-
+## Schools database points, based on the selected question
             addMarkers(data = df(),
+## Popup that appears when any marker is clicked on. Pulled from schools database
                        popup = paste0(
                            "<div class='leaflet-popup-scrolled' style='max-width:600px;max-height:200px'>",
                            "<br>",'<strong>' ,'<h3>',df()$EntityTitle,'</strong>','</h3>',
@@ -363,6 +363,7 @@ function(input,output, session){
                            "<br>Facilities Quality: ", df()$`Overall facilities quality`,
                            "<br>Projects and Programmes: ", df()$`Is this school involved in any other projects?`)
             ) %>%
+## Adds legend for the background data
             addLegend(
                 position = "bottomright",
                 title = title(),
@@ -370,6 +371,7 @@ function(input,output, session){
                 colors = colours(),
                 labels = labels()
             ) %>%
+## Adds data source for background data
             addControl(
                 tags$em(dataSource()), position = "bottomleft"
             ) %>%
@@ -382,6 +384,9 @@ function(input,output, session){
         
     })
     
+
+
+## Map download ------------------------------------------------------------
 
     
     observeEvent(input$go, {
@@ -458,8 +463,8 @@ function(input,output, session){
             data <- NCMP6_time
         } else if (input$topic == "readiness_time") {
             data <- readiness_time
-        } else if (input$topic == "readiness_fsm_time") {
-            data <- readiness_fsm_time
+        # } else if (input$topic == "readiness_fsm_time") {
+        #     data <- readiness_fsm_time
         } else if (input$topic == "neet_time") {
             data <- neets_time
         } else if (input$topic == "cypal_time") {
@@ -481,8 +486,8 @@ function(input,output, session){
             t <- "Proportion of Children Classified as Overweight in Year 6"
         } else if (input$topic == "readiness_time") {
             t <- "Proportion of Children Classified as Achieving a Good Level of School Readiness"
-        } else if (input$topic == "readiness_fsm_time") {
-            t <- "Proportion of Children on Free School Meals Classified as Achieving a Good Level of School Readiness"
+        # } else if (input$topic == "readiness_fsm_time") {
+        #     t <- "Proportion of Children on Free School Meals Classified as Achieving a Good Level of School Readiness"
         } else if (input$topic == "neet_time") {
             t <- "Proportion of 16 and 17 Year Olds Not in Education, Employment or Training"
         } else if (input$topic == "cypal_time") {
@@ -504,7 +509,8 @@ function(input,output, session){
             s <- "Source: Sport England Active Lives Children and Young People Survey"
         } else if ((input$topic == "ncmprec_time")|(input$topic == "ncmp6_time")) {
             s <- "Source: National Child Measurement Programme"
-        } else if ((input$topic == "readiness_time")|(input$topic == "readiness_fsm_time")|
+        } else if ((input$topic == "readiness_time")|
+                   # (input$topic == "readiness_fsm_time")|
                    (input$topic == "care_time")|(input$topic == "neet_time")) {
             s <- "Source: Department for Education"
         } else if (input$topic == "poverty_time") {
@@ -519,7 +525,8 @@ function(input,output, session){
 ## Y axis ----    
     ylabel <- reactive({
         if ((input$topic == "cypal_time")|(input$topic == "al_time")|(input$topic == "ncmprec_time")|
-            (input$topic == "ncmp6_time")|(input$topic == "readiness_time")|(input$topic == "readiness_fsm_time")|
+            (input$topic == "ncmp6_time")|(input$topic == "readiness_time")|
+            # (input$topic == "readiness_fsm_time")|
             (input$topic == "neet_time")|(input$topic == "poverty_time")) {
             y <- "Percentage (%)"
         } else if (input$topic == "care_time") {
@@ -555,8 +562,8 @@ function(input,output, session){
             min <- NCMP6_time %>% filter(Timeperiod == "2006/07")
         } else if (input$topic == "readiness_time") {
             min <- readiness_time %>% filter(Timeperiod == "2012/13")
-        } else if (input$topic == "readiness_fsm_time") {
-            min <- readiness_fsm_time %>% filter(Timeperiod == "2012/13")
+        # } else if (input$topic == "readiness_fsm_time") {
+        #     min <- readiness_fsm_time %>% filter(Timeperiod == "2012/13")
         } else if (input$topic == "neet_time") {
             min <- neets_time %>% filter(Timeperiod == "2016")
         } else if (input$topic == "cypal_time") {
@@ -578,8 +585,8 @@ function(input,output, session){
             max <- NCMP6_time %>% filter(Timeperiod == "2019/20")
         } else if (input$topic == "readiness_time") {
             max <- readiness_time %>% filter(Timeperiod == "2018/19")
-        } else if (input$topic == "readiness_fsm_time") {
-            max <- readiness_fsm_time %>% filter(Timeperiod == "2018/19")
+        # } else if (input$topic == "readiness_fsm_time") {
+        #     max <- readiness_fsm_time %>% filter(Timeperiod == "2018/19")
         } else if (input$topic == "neet_time") {
             max <- neets_time %>% filter(Timeperiod == "2019")
         } else if (input$topic == "cypal_time") {
@@ -601,8 +608,8 @@ function(input,output, session){
             t <- "prevalence of obesity in year 6 children"
         } else if (input$topic == "readiness_time") {
             t <- "proportion of children achieving a good level of development at the end of reception"
-        } else if (input$topic == "readiness_fsm_time") {
-            t <- "percentage of children with free school meal status achieving a good level of development at the end of reception"
+        # } else if (input$topic == "readiness_fsm_time") {
+        #     t <- "percentage of children with free school meal status achieving a good level of development at the end of reception"
         } else if (input$topic == "neet_time") {
             t <- "proportion of 16-17 Year Olds NEET"
         } else if (input$topic == "cypal_time") {
@@ -617,29 +624,43 @@ function(input,output, session){
         return(t)
     })
 ### Reactive area and value ----
-    x <- reactive({
+    early_area <- reactive({
      early() %>% filter(AreaName %in% input$area)
      })
     
-     y <- reactive({
+     late_area <- reactive({
          latest() %>% filter(AreaName %in% input$area)
      })
     
      diff <- reactive ({
-         y()$Value-x()$Value
+         late_area()$Value-early_area()$Value
      })
+     
+     # inc_dec <- reactive({
+     #     if (diff() <0) {
+     #         change <- "decreased"
+     #     } else  {
+     #         change <- "increased"
+     #     }
+     #     return(change)
+     # })
+     
+     
 ### Text ----
-     output$change <- renderText({
-         paste("Since baseline the ", graph_title(), "in ", input$area, " has ",
-               (if ((y()$Value-x()$Value)>0){
-                   print("increased")
-               } else {
-                   print("decreased")
-               }),
-               " by ", format(round(abs(diff()), 1), nsmall = 1), "%." )
-     })
-    
+### Unsucessful in stating area increase/decrease, displays the same for all. Value and
+### area will be correct but all will say increase/decrease
+     
+     # output$change <- renderText({
+     #     paste("Since baseline the ", graph_title(), "in ", input$area, " has ",
+     #           inc_dec(),
+     #           " by ", format(round(abs(diff()), 1), nsmall = 1), "%." )
+     # })
 
+     output$change <- renderText({
+         paste("Since baseline the ", graph_title(), "in ", input$area, " has changed by ",
+              format(round((diff()), 1), nsmall = 1), "%." )     
+         })
+     
 ## Screenshot ----
     observeEvent(input$go, {
         screenshot(selector = "#chart", filename = "chart")
@@ -647,3 +668,6 @@ function(input,output, session){
     
     
 }
+
+### Login page server ----
+polished::secure_server(server)
