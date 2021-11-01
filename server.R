@@ -671,4 +671,4 @@ server <- function(input,output, session){
 }
 
 ### Login page server ----
-# polished::secure_server(server)
+polished::secure_server(server)

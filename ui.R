@@ -239,10 +239,10 @@ ui <- dashboardPage(
 
 # Log in page -------------------------------------------------------------
 
-# polished::secure_ui(ui,
-#                     sign_in_page_ui = sign_in_ui_default(
-#                         color = "#8c1d82",
-#                         company_name = "GM Moving",
-#                         logo_top = tags$div(style = "width: 300px; max-width: 100%; color: #FFF;", class =
-#                                                 "text-center", h1("Schools Database", style = "margin-bottom: 0; margin-top: 30px;"))
-#                     ))
+polished::secure_ui(ui,
+                    sign_in_page_ui = sign_in_ui_default(
+                        color = "#8c1d82",
+                        company_name = "GM Moving",
+                        logo_top = tags$div(style = "width: 300px; max-width: 100%; color: #FFF;", class =
+                                                "text-center", h1("Schools Database", style = "margin-bottom: 0; margin-top: 30px;"))
+                    ))
