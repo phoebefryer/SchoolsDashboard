@@ -297,14 +297,7 @@ server <- function(input,output, session){
                     position = "topleft") %>%
 ## Adds search functionality - area, postcode etc
             addSearchOSM() %>%
-## Base GM boundaries
-            addPolygons(
-                data = gm_la,
-                weight = 2,
-                opacity = 1,  
-                color = 'black', 
-                fillOpacity = 0
-            ) %>%
+
 ## Data specific layer, adds in the selected data
             addPolygons(
                 data = domain(),
@@ -321,6 +314,14 @@ server <- function(input,output, session){
                     bringToFront = TRUE
                 )
             ) %>%
+            addPolygons(
+                data = lads,
+                weight = 2,
+                opacity = 1,  
+                color = 'black', 
+                fillOpacity = 0
+            ) %>%  
+
 ## Crime data, adds small points marking location of search
             addCircleMarkers(data = df2(),
                              lng = ~longitude, lat = ~latitude,
@@ -670,4 +671,4 @@ server <- function(input,output, session){
 }
 
 ### Login page server ----
-polished::secure_server(server)
+# polished::secure_server(server)

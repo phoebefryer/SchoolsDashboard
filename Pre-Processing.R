@@ -20,7 +20,7 @@ lookupmsoa <- read_csv("https://opendata.arcgis.com/datasets/fe6c55f0924b4734adf
   filter (LAD17NM %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan"))%>%
   pull(MSOA11NM) 
 
-lsoa <- st_read("data/best_fit_lsoa.geojson")
+lsoa <- st_read("pre-processing/best_fit_lsoa.geojson")
 
 lsoa %>%
   filter(lsoa11cd %in% lookup) %>%
@@ -31,23 +31,23 @@ la <- st_read("https://ons-inspire.esriuk.com/arcgis/rest/services/Administrativ
 gm_la <- la %>%
   filter(lad17nm %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan"))
 
-lads <- st_read("data/regions.geojson")
+lads <- st_read("pre-processing/regions.geojson")
 
 lads <- lads %>%
   filter(lad17nm %in% lookupname) %>%
-  st_write("data/GM_LADS.geojson")
+  st_write("pre-processing/GM_LADS.geojson")
 
-gm_la <- st_read("data/GMLAs.shp")
+gm_la <- st_read("pre-processing/GMLAs.shp")
 
 MSOAimport <- st_read("https://opendata.arcgis.com/datasets/5d4e4cc075ef4a40acbe6e50735451ef_0.geojson")
 
 msoa <- MSOAimport %>%
   filter(MSOA11NM %in% lookupmsoa) 
 
-msoa %>% st_write("data/GM_MSOA.geojson")
+msoa %>% st_write("pre-processing/GM_MSOA.geojson")
 
 constituency <- st_read("https://opendata.arcgis.com/datasets/5ce27b980ffb43c39b012c2ebeab92c0_2.geojson")
-wardtola <- read.csv("data/Parliamentary Constituency to LA.csv")
+wardtola <- read.csv("pre-processing/Parliamentary Constituency to LA.csv")
 constituency <- left_join(constituency, wardtola, by = c("pcon17cd" = "PCON16CD"))
 constituency <- constituency %>%
   filter (LAD16NM %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan"))
@@ -56,7 +56,7 @@ constituency %>% st_write("data/GM_Constituency.geojson")
 # Datasets ----------------------------------------------------------------
 
 ## IMD ----
-imd <- read.csv("data/imd.csv") %>% 
+imd <- read.csv("pre-processing/imd.csv") %>% 
   mutate(decile = factor(decile, levels = c(1:10), ordered = TRUE))
 
 imd <- imd %>%
@@ -90,7 +90,7 @@ environ <- imd %>%
   filter(index_domain == "Living Environment")
 
 ## Active Lives ----
-CYPAL <- read_excel("data/Active Lives Template v20.xlsx", 
+CYPAL <- read_excel("pre-processing/Active Lives Template v20.xlsx", 
                     sheet = "Full CYP Active Lives")
 
 CYPAL <- left_join(lads, CYPAL, by = c("lad17nm" = "Area"))
@@ -222,7 +222,7 @@ neets_bins <- c(3,4,5,6,7,8,9)
 neets_pal <- colorBin(c("#FFFFFF", "#F0B3CA", "#E16795", "#D21C60", "#AA216C", "#822779", "#5B2D86"), domain = neets$Value, bins = neets_bins)
 
 ## Youth Homelessness ----
-homeless <- read.csv("data/Youth Homelessness.csv")
+homeless <- read.csv("pre-processing/Youth Homelessness.csv")
 homeless <- left_join(lads, homeless, by = c("lad17nm" = "Area.Name"))
 
 homeless_bins <- c(0.5, 1, 1.5 ,2, 2.5, 3, 3.5)
@@ -233,7 +233,7 @@ homeless_pal <- colorBin(c("#FFFFFF", "#EDA4BF", "#DB497F", "#BA1F67", "#8A2676"
 
 ## Childhood Poverty ----
 
-poverty <- read.csv("data/poverty.csv")
+poverty <- read.csv("pre-processing/poverty.csv")
 poverty <- left_join(constituency, poverty, by = c("pcon17cd" = "Area Code"))
 poverty <- poverty %>%
   mutate(`Percentage 2018/19` = `Percentage 2018/19`*100) %>% mutate(`Percentage 2017/18` = `Percentage 2017/18`*100) %>%
@@ -286,7 +286,7 @@ rbind(ss_0119, ss_0219, ss_0319, ss_0419, ss_0519, ss_0619) %>%
 
 ## Greenspace ----
 
-privateGreenspace <- read.csv("data/Outdoor Private Space MSOA.csv")
+privateGreenspace <- read.csv("pre-processing/Outdoor Private Space MSOA.csv")
 
 privateGreenspace <- left_join(msoa, privateGreenspace, by = c("MSOA11CD" = "MSOA.code"))
 
@@ -306,15 +306,14 @@ publicGreenspace_pal <- colorBin(c("#FFFFFF", "#F0B3CA", "#E16795", "#D21C60", "
                                  domain = publicGreenspace$Average.number.of..Parks..Public.Gardens..or.Playing.Fields.within.1.000.m.radius,
                                  bins = publicGreenspace_bins)
 
-sat_clubs <- read.csv("data/sat_clubs.csv")
 
 
 ## Schools Database ----
 
 
-postcodes <- read.csv("data/ukpostcodes.csv")
-db <- read_csv("data/SchoolsDb310821.csv")
-schools <- read_csv("data/Schools2021.csv")
+postcodes <- read.csv("pre-processing/ukpostcodes.csv")
+db <- read_csv("pre-processing/SchoolsDb310821.csv")
+schools <- read_csv("pre-processing/Schools2021.csv")
 schoolslatlong <- left_join(schools, postcodes, by = c("Postcode" ="postcode"))
 schoolsdb <- left_join(db, schoolslatlong, by = c("EntityID" = "GroupID"))
 schoolsdb <- schoolsdb[-c(1:2,4:9, 67:70)]
@@ -455,7 +454,7 @@ col_10 <- c("#FFFFFF", "#FFD8E4", "#FEB0C9", "#F887AF", "#F05996",
             "#E5007E", "#D00682", "#BA1084", "#A31884", "#8C1D82")
 
 
-ss19 <- read.csv("data/ss19.csv")
+ss19 <- read.csv("pre-processing/ss19.csv")
 
 ss192 <- ss19 %>%
   filter(!is.na(lng)) %>%
@@ -512,15 +511,15 @@ yp_bins <- c(8,10,12,14,16,18)
 yp_pal<- colorBin(c("#FFFFFF", "#EDA4BF", "#DB497F", "#BA1F67", "#8A2676", "#5B2D86"),
                   domain = yp$OBS_VALUE, bins = yp_bins)
 
-no_U25 <- nomis_get_data(id = "NM_2002_1", time = "latest", geography = "TYPE431") %>%
+no_u25 <- nomis_get_data(id = "NM_2002_1", time = "latest", geography = "TYPE431") %>%
   filter(C_AGE %in% c("201", "250")) %>%
   filter(GEOGRAPHY_NAME %in% c("Bolton","Bury","Manchester","Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan")) %>%
   filter(GENDER == "0") %>%
   filter(MEASURES_NAME == "Value")
 
-no_U25 %>% write.csv("data/no_U25.csv")
+no_u25 %>% write.csv("data/no_U25.csv")
 
-no_U25 <- sum(yp$OBS_VALUE)
+no_U25 <- sum(no_u25$OBS_VALUE)
 
 branded_colors <- list(
   "orange" = "#ED8B00",
@@ -613,7 +612,6 @@ NCMP6_time <- fingertips_data(IndicatorID = 90323, AreaTypeID = 202) %>%
 
 theme_GMM <- function() {
   
-  font <- windowsFonts("Helvetica")  #gOTHAM TITLES
   fontColour <- "#706F6F"
   
   theme(
@@ -627,7 +625,6 @@ theme_GMM <- function() {
     
     #key text
     plot.title = element_text(
-      family = font,
       colour = "#8C1D82",
       size = 24,
       face = 'bold',          
@@ -635,24 +632,20 @@ theme_GMM <- function() {
       vjust = 2),         
     
     plot.subtitle = element_text(         
-      family = font,
       colour = fontColour,
       size = 18),               
     
     plot.caption = element_text(          
-      family = font,  
       colour = fontColour,
       size = 18,                 
       hjust = 0),               
     
     #general text
     axis.title = element_text(             
-      family = font,    
       colour = fontColour,
       size = 18),             
     
     axis.text = element_text(            
-      family = font, 
       colour = fontColour,
       size = 16),              
     
@@ -666,7 +659,7 @@ theme_GMM <- function() {
     legend.background = element_blank(),
     legend.title = element_blank(),
     legend.key = element_blank(),
-    legend.text = element_text(family = font,
+    legend.text = element_text(
                                size = 18,
                                color  = fontColour)
   )
@@ -890,4 +883,3 @@ check_pal <- function(
 
 check_pal(5)
 
-shinyloadtest::record_session("http://127.0.0.1:3064")
