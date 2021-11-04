@@ -9,12 +9,12 @@ library(dashboardthemes); library(polished); library(config)
 
 # Login -------------------------------------------------------------------
 
-app_config <- config::get()
-
-global_sessions_config(
-  app_name = "schools_dashboard",
-  api_key = app_config$api_key
-)
+# app_config <- config::get()
+# 
+# global_sessions_config(
+#   app_name = "schools_dashboard",
+#   api_key = app_config$api_key
+# )
 
 # Boundaries --------------------------------------------------------------
 
@@ -304,7 +304,7 @@ al_time$Timeperiod <- factor(al_time$Timeperiod, levels =
 
 
 postcodes <- read.csv("data/ukpostcodes.csv")
-db <- read_csv("data/SchoolsDb281021.csv")
+db <- read_csv("data/SchoolsDb310821.csv")
 schools <- read_csv("data/Schools2021.csv")
 schoolslatlong <- left_join(schools, postcodes, by = c("Postcode" ="postcode"))
 schoolsdb <- left_join(db, schoolslatlong, by = c("EntityID" = "GroupID"))

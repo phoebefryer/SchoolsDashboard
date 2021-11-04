@@ -234,8 +234,8 @@ server <- function(input,output, session){
                           else if (input$question == 'School Type - Education Phase') {
                               sort(unique(scan(text=schoolsdb$`School Type - Education Phase`, what='', sep='|')))
                           }
-                          else if (input$question == 'Indoor facilities: Does your school have any of the following') {
-                              sort(unique(scan(text=schoolsdb$`Indoor facilities: Does your school have any of the following`, what='', sep='|')))
+                          else if (input$question == 'Indoor facilities: Does your school have any of the following?') {
+                              sort(unique(scan(text=schoolsdb$`Indoor facilities: Does your school have any of the following?`, what='', sep='|')))
                           }
                           else if (input$question == 'Outdoor facilities: Does your school have any of the following?') {
                               sort(unique(scan(text=schoolsdb$`Outdoor facilities: Does your school have any of the following?`, what='', sep='|')))
@@ -257,8 +257,8 @@ server <- function(input,output, session){
         else if (input$question == 'School Type - Education Phase') {
             df <-  filter(schoolsdb, grepl((paste0('(\\Q', input$answer, '\\E)', collapse='|')), `School Type - Education Phase`))
         }
-        else if (input$question == 'Indoor facilities: Does your school have any of the following') {
-            df <-  filter(schoolsdb, grepl((paste0('(\\Q', input$answer, '\\E)', collapse='|')), `Indoor facilities: Does your school have any of the following`))
+        else if (input$question == 'Indoor facilities: Does your school have any of the following?') {
+            df <-  filter(schoolsdb, grepl((paste0('(\\Q', input$answer, '\\E)', collapse='|')), `Indoor facilities: Does your school have any of the following?`))
         }
         else if (input$question == 'Outdoor facilities: Does your school have any of the following?') {
             df <-  filter(schoolsdb, grepl((paste0('(\\Q', input$answer, '\\E)', collapse='|')), `Outdoor facilities: Does your school have any of the following?`))
@@ -671,4 +671,4 @@ server <- function(input,output, session){
 }
 
 ### Login page server ----
-polished::secure_server(server)
+# polished::secure_server(server)
